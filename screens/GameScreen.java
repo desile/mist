@@ -1,11 +1,17 @@
 package com.mist.screens;
 
 import com.badlogic.gdx.Screen;
+import com.mist.controllers.WorldController;
 import com.mist.game.MistGame;
+import com.mist.renderers.WorldRenderer;
+import com.mist.world.World;
 
 public class GameScreen implements Screen { //implements InputProcessor?
 
-	MistGame game;
+	private MistGame game;
+	private World world;
+	private WorldRenderer renderer;
+	private WorldController controller;
 	
 	public GameScreen(MistGame game){
 		this.game = game;
