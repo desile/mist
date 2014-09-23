@@ -11,7 +11,7 @@ public class MistGame extends Game{
 
 	@Override
 	public void create() {
-		System.out.println("Nikita's branch");
+		System.out.println("Game");
 		setScreen(new GameScreen(this));
 	}
 	
