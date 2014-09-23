@@ -7,7 +7,7 @@ import com.mist.screens.GameScreen;
 
 public class MistGame extends Game{
 	
-	//TODO: пюгцпеярх мюбнпнвеммне цнбмн б юдейбюрмсч йсвс б йкюяяе Player х ецн пндхрекъу
+	//TODO: п═п░п≈п⌠п═п∙п║п╒п≤ п²п░п▓п·п═п·п╖п∙п²п²п·п∙ п⌠п·п▓п²п· п▓ п░п■п∙п п▓п░п╒п²пёп╝ п пёп╖пё п▓ п п⌡п░п║п║п∙ Player п≤ п∙п⌠п· п═п·п■п≤п╒п∙п⌡п╞п╔
 	
 	public static final String GAME_TITLE = "Mist Game";
 	public static final int WINDOW_WIDTH = 480;

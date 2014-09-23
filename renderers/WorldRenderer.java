@@ -13,18 +13,18 @@ import com.mist.world.objects.Player;
 
 public class WorldRenderer {
 	
-	//TODO: Привести в порядок
-	//TODO: Возможно разделить на классы, отвественные за рендер различных типов объектов
+	//TODO: РџСЂРёРІРµСЃС‚Рё РІ РїРѕСЂСЏРґРѕРє
+	//TODO: Р’РѕР·РјРѕР¶РЅРѕ СЂР°Р·РґРµР»РёС‚СЊ РЅР° РєР»Р°СЃСЃС‹, РѕС‚РІРµСЃС‚РІРµРЅРЅС‹Рµ Р·Р° СЂРµРЅРґРµСЂ СЂР°Р·Р»РёС‡РЅС‹С… С‚РёРїРѕРІ РѕР±СЉРµРєС‚РѕРІ
 	
 	private World world;
 	public OrthographicCamera camera;
-	ShapeRenderer renderer = new ShapeRenderer(); //TODO: Орагнизовать возможности дебагмода (рендерятся только контуры объектов, без текстур)
+	ShapeRenderer renderer = new ShapeRenderer(); //TODO: РћСЂР°РіРЅРёР·РѕРІР°С‚СЊ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё РґРµР±Р°РіРјРѕРґР° (СЂРµРЅРґРµСЂСЏС‚СЃСЏ С‚РѕР»СЊРєРѕ РєРѕРЅС‚СѓСЂС‹ РѕР±СЉРµРєС‚РѕРІ, Р±РµР· С‚РµРєСЃС‚СѓСЂ)
 	SpriteBatch sb;
 	
 	public int width;
 	public int height;
 	
-	//TODO: Составить регламент по работе камер
+	//TODO: РЎРѕСЃС‚Р°РІРёС‚СЊ СЂРµРіР»Р°РјРµРЅС‚ РїРѕ СЂР°Р±РѕС‚Рµ РєР°РјРµСЂ
 	
 	public WorldRenderer(World world){
 		this.world = world;

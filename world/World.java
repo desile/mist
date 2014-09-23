@@ -8,8 +8,8 @@ import com.mist.world.objects.Player;
 
 public class World {
 	
-	//TODO: Выбрать лучшую позицию камеры
-	//TODO: Начать проектирование мира
+	//TODO: Р’С‹Р±СЂР°С‚СЊ Р»СѓС‡С€СѓСЋ РїРѕР·РёС†РёСЋ РєР°РјРµСЂС‹
+	//TODO: РќР°С‡Р°С‚СЊ РїСЂРѕРµРєС‚РёСЂРѕРІР°РЅРёРµ РјРёСЂР°
 	
 	public DynamicGameObject testRect;
 	public GameObject testTex;

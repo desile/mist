@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GameObject {
 	
-	//TODO: Убрать тестовые функции
-	//TODO: Конструкторы на простых типах
+	//TODO: РЈР±СЂР°С‚СЊ С‚РµСЃС‚РѕРІС‹Рµ С„СѓРЅРєС†РёРё
+	//TODO: РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ РЅР° РїСЂРѕСЃС‚С‹С… С‚РёРїР°С…
 
 	protected Vector2 position;
 	protected Rectangle bounds;
