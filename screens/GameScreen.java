@@ -10,6 +10,11 @@ import com.mist.world.World;
 
 public class GameScreen implements Screen { //implements InputProcessor?
 
+	//TODO: Составить схему/диаграмму для модели MVC
+	//TODO: Вероятно, лучше всего организовать множество классов-участников MVC, разделяемых по типам объектов
+	
+	//TODO: Логика для передвижения игроков,объектов (только в восемь сторон, можно пока в четыре). Придумать, где реализовать эту логику.
+	
 	private MistGame game;
 	private World world;
 	private WorldRenderer renderer;
@@ -19,6 +24,7 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		this.game = game;
 		world = new World();
 		renderer = new WorldRenderer(world);
+		controller = new WorldController(world);
 	}
 	
 	@Override
@@ -26,6 +32,7 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		controller.update(delta);
 		renderer.render();
 		
 	}
