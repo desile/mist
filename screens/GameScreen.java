@@ -1,6 +1,8 @@
 package com.mist.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.mist.controllers.WorldController;
 import com.mist.game.MistGame;
 import com.mist.renderers.WorldRenderer;
@@ -15,11 +17,16 @@ public class GameScreen implements Screen { //implements InputProcessor?
 	
 	public GameScreen(MistGame game){
 		this.game = game;
+		world = new World();
+		renderer = new WorldRenderer(world);
 	}
 	
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		renderer.render();
 		
 	}
 

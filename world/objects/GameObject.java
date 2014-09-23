@@ -10,12 +10,20 @@ public class GameObject {
 	
 	public GameObject(Vector2 position, Vector2 rec){ //links constructor
 		this.position = position;
-		this.bounds = new Rectangle(position.x - rec.x, position.y - rec.y, rec.x, rec.y);
+		this.bounds = new Rectangle(position.x - rec.x/2, position.y - rec.y/2, rec.x, rec.y);
 	}
 	
 	public GameObject (float x, float y, float width, float height) {
 		this.position = new Vector2(x, y);
 		this.bounds = new Rectangle(x - width / 2, y - height / 2, width, height);
+	}
+	
+	public Vector2 getPosition(){
+		return position;
+	}
+	
+	public Rectangle getBounds(){
+		return bounds;
 	}
 	
 }
