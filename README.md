@@ -3,7 +3,7 @@ mist
 
 Обновленный код для DesktopLauncher.java
 
-<code>
+```java
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -13,4 +13,4 @@ public class DesktopLauncher {
 		new LwjglApplication(new MistGame(), config);
 	}
 }
-</code>
+```
