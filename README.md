@@ -14,3 +14,5 @@ public class DesktopLauncher {
 	}
 }
 ```
+<i>prepare5.2</i> commit preview
+![prepare5.2](gitdata/prepare5.gif)
