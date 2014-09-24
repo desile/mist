@@ -15,6 +15,9 @@ public class WorldController {
 	
 	public void update(float delta){
 		world.dynamTest.update(delta);
+		world.test2.update(delta);
+		world.test3.update(delta);
+		world.test4.update(delta);
 	}
 	
 }

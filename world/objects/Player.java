@@ -24,13 +24,33 @@ public class Player extends DynamicGameObject {
 	}
 	
 	private void initTest(){
+		
+		int dirCoeffitient = 0;
+		switch (direction) {
+		case SOUTH:
+			dirCoeffitient = 0;
+			break;
+		case WEST:
+			dirCoeffitient = 1;
+			break;
+		case EAST:
+			dirCoeffitient = 2;
+			break;
+		case NORTH:
+			dirCoeffitient = 3;
+			break;
+
+		default:
+			break;
+		}
+		
 		tex = new Texture("test_male.png");//TODO: Создать класс-каталог/коллекцию для работы с ресурсами
 		TextureRegion[] sprites = new TextureRegion[4];//Четыре кадра анимации (собираем куски из текстуры в массив регионов)
 		for(int i = 0; i < sprites.length-1; i++) {
-			sprites[i] = new TextureRegion(tex, i * 32, 0, 32, 32);
+			sprites[i] = new TextureRegion(tex, i * 32, dirCoeffitient*32, 32, 32);
 		}
 		//Последний кадр - это второй из спрайтовой текстуры, для этого приходится записать его вне цикла.
-		sprites[3] = new TextureRegion(tex, 1 * 32, 0, 32, 32);
+		sprites[3] = new TextureRegion(tex, 1 * 32, dirCoeffitient*32, 32, 32);
 		
 		animation.setFrames(sprites, 1 / 6f);
 		

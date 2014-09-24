@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mist.game.MistGame;
 import com.mist.world.World;
 import com.mist.world.objects.DynamicGameObject;
+import com.mist.world.objects.GameObject;
 import com.mist.world.objects.Player;
 
 public class WorldRenderer {
@@ -45,8 +46,11 @@ public class WorldRenderer {
 	
 	public void render(){
 		//renderTestRectangle();
-		renderTexture();
-		renderDynamTest();
+		renderTexture(world.dynamTest);
+		renderTexture(world.testTex);
+		renderTexture(world.test2);
+		renderTexture(world.test3);
+		renderTexture(world.test4);
 	}
 	
 	private void renderTestRectangle(){
@@ -61,28 +65,13 @@ public class WorldRenderer {
 		dbgrenderer.end();
 	}
 	
-	private void renderTexture(){
-		world.testTex.render(sb);
+	private void renderTexture(GameObject obj){
+		obj.render(sb);
 		if(debug){
 			dbgrenderer.begin(ShapeType.Line);
-			Rectangle rect = world.testTex.getBounds();
-			float x = world.testTex.getPosition().x;
-			float y = world.testTex.getPosition().y;
-			dbgrenderer.setColor(new Color(1, 0, 0, 1));
-			dbgrenderer.rect(x, y, rect.width, rect.height);
-			dbgrenderer.end();
-			
-		}
-	}
-	
-	private void renderDynamTest(){
-		world.dynamTest.render(sb);
-		Player test = world.dynamTest;
-		if(debug){
-			dbgrenderer.begin(ShapeType.Line);
-			Rectangle rect = test.getBounds();
-			float x = test.getPosition().x;
-			float y = test.getPosition().y;
+			Rectangle rect = obj.getBounds();
+			float x = obj.getPosition().x;
+			float y = obj.getPosition().y;
 			dbgrenderer.setColor(new Color(1, 0, 0, 1));
 			dbgrenderer.rect(x, y, rect.width, rect.height);
 			dbgrenderer.end();
