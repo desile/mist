@@ -34,7 +34,9 @@ public class WorldRenderer {
 		this.world = world;
 		//TODO: ZOOM for camera
 		this.camera = new OrthographicCamera(MistGame.WINDOW_WIDTH, MistGame.WINDOW_HEIGHT);
-		camera.position.set(150, 150, 0);
+		//camera.setToOrtho(false);
+		camera.position.set(0,0,0);
+		camera.update();
 		sb = new SpriteBatch();
 		sb.setProjectionMatrix(camera.combined);
 		
@@ -44,7 +46,7 @@ public class WorldRenderer {
 	public void render(){
 		//renderTestRectangle();
 		renderTexture();
-		world.dynamTest.render(sb);
+		renderDynamTest();
 	}
 	
 	private void renderTestRectangle(){
@@ -66,6 +68,21 @@ public class WorldRenderer {
 			Rectangle rect = world.testTex.getBounds();
 			float x = world.testTex.getPosition().x;
 			float y = world.testTex.getPosition().y;
+			dbgrenderer.setColor(new Color(1, 0, 0, 1));
+			dbgrenderer.rect(x, y, rect.width, rect.height);
+			dbgrenderer.end();
+			
+		}
+	}
+	
+	private void renderDynamTest(){
+		world.dynamTest.render(sb);
+		Player test = world.dynamTest;
+		if(debug){
+			dbgrenderer.begin(ShapeType.Line);
+			Rectangle rect = test.getBounds();
+			float x = test.getPosition().x;
+			float y = test.getPosition().y;
 			dbgrenderer.setColor(new Color(1, 0, 0, 1));
 			dbgrenderer.rect(x, y, rect.width, rect.height);
 			dbgrenderer.end();

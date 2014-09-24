@@ -32,6 +32,13 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		
+		if (Gdx.input.isTouched()) { //TODO: В последствии заменить делитель с масштаба на зум
+			int x = (Gdx.input.getX() - MistGame.getWidth()/2) / MistGame.WINDOW_SCALE;
+			int y =	((MistGame.getHeight() - Gdx.input.getY()) - MistGame.getHeight()/2) / MistGame.WINDOW_SCALE;
+			System.out.println("Input occurred at x=" + x + ", y=" + y);
+		}
+		
 		controller.update(delta);
 		renderer.render();
 		
