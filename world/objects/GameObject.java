@@ -13,18 +13,19 @@ public class GameObject {
 
 	protected Vector2 position;
 	protected Rectangle bounds;
-	public Texture tex;
-	public TextureRegion texRegion;
+	protected Texture tex;
+	protected TextureRegion texRegion;
 	
 	public GameObject(Vector2 position, Vector2 rec){ //links constructor
 		this.position = position;
-		this.bounds = new Rectangle(position.x - rec.x/2, position.y - rec.y/2, rec.x, rec.y);
+		this.bounds = new Rectangle(position.x, position.y, rec.x, rec.y);
 		initTest();
 	}
 	
 	public GameObject (float x, float y, float width, float height) {
 		this.position = new Vector2(x, y);
-		this.bounds = new Rectangle(x - width / 2, y - height / 2, width, height);
+		this.bounds = new Rectangle(x, y, width, height);
+		initTest();
 	}
 	
 	public Vector2 getPosition(){
@@ -35,11 +36,13 @@ public class GameObject {
 		return bounds;
 	}
 	
-	public void initTest(){
+	private void initTest(){
 		tex = new Texture("test_male.png");
+		bounds.width = tex.getWidth();
+		bounds.height = tex.getHeight();
 	}
 	
-	public void render(SpriteBatch sb){
+	public void render(SpriteBatch sb){//рисует всю переданную картинку
 		sb.begin();
 		sb.draw(tex, position.x, position.y);
 		sb.end();

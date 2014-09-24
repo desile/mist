@@ -11,14 +11,15 @@ public class World {
 	//TODO: Выбрать лучшую позицию камеры
 	//TODO: Начать проектирование мира
 	
+	//TODO: Организовать систему подачи объектов в WorldRenderer
+	
 	public DynamicGameObject testRect;
 	public GameObject testTex;
 	public Player dynamTest;
 	
 	public World(){
-		testRect = new DynamicGameObject(new Vector2(0,0),new Vector2(100,100));
-		//player = new Player(new Vector2(0,0),new Vector2(100,100), Direction.SOUTH);
-		testTex = new GameObject(new Vector2(-50, -50), new Vector2(50, 50));
-		dynamTest = new Player(new Vector2(100,100),new Vector2(100,100),Direction.SOUTH);
+		testRect = new DynamicGameObject(0,0,100,100);
+		testTex = new GameObject(-50,-50,0,0);
+		dynamTest = new Player(100,100,100,100,Direction.SOUTH);
 	}
 }

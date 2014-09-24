@@ -13,6 +13,17 @@ public class Player extends DynamicGameObject {
 		//TODO: Написать автомат или мэнэджер статусов
 		this.state = State.STAND;
 		//TODO: Сделать привязку анимации к состояниям и направлению персонажа.
+		initTest();
+	}
+	
+	public Player(float x, float y, float width, float height, Direction dir){
+		super(x, y, width, height);
+		this.state = State.STAND;
+		this.direction = dir;
+		initTest();
+	}
+	
+	private void initTest(){
 		tex = new Texture("test_male.png");//TODO: Создать класс-каталог/коллекцию для работы с ресурсами
 		TextureRegion[] sprites = new TextureRegion[4];//Четыре кадра анимации (собираем куски из текстуры в массив регионов)
 		for(int i = 0; i < sprites.length-1; i++) {
