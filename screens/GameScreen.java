@@ -2,6 +2,7 @@ package com.mist.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.mist.controllers.WorldController;
 import com.mist.game.MistGame;
@@ -34,8 +35,8 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		
 		
 		if (Gdx.input.isTouched()) { //TODO: В последствии заменить делитель с масштаба на зум
-			int x = (Gdx.input.getX() - MistGame.getWidth()/2) / MistGame.WINDOW_SCALE;
-			int y =	((MistGame.getHeight() - Gdx.input.getY()) - MistGame.getHeight()/2) / MistGame.WINDOW_SCALE;
+			int x = (int) ((Gdx.input.getX() - MistGame.getWidth()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.x);
+			int y =	(int) (((MistGame.getHeight() - Gdx.input.getY()) - MistGame.getHeight()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.y);
 			System.out.println("Input occurred at x=" + x + ", y=" + y);
 		}
 		

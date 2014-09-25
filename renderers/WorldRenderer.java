@@ -36,12 +36,15 @@ public class WorldRenderer {
 		//TODO: ZOOM for camera
 		this.camera = new OrthographicCamera(MistGame.WINDOW_WIDTH, MistGame.WINDOW_HEIGHT);
 		//camera.setToOrtho(false);
-		camera.position.set(0,0,0);
+		camera.position.set(50,70,0);
+		camera.zoom = 1.3f;
 		camera.update();
 		sb = new SpriteBatch();
 		sb.setProjectionMatrix(camera.combined);
 		
 		dbgrenderer.setProjectionMatrix(camera.combined);
+		
+		//System.out.println("")
 	}
 	
 	public void render(){
