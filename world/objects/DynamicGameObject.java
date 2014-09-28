@@ -1,9 +1,11 @@
 package com.mist.world.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.mist.controllers.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 
 public class DynamicGameObject extends GameObject {
@@ -19,6 +21,8 @@ public class DynamicGameObject extends GameObject {
 	protected Direction direction;
 	protected State state;
 	protected Animation animation;
+	public float velocity = 1.5f;
+	protected boolean playAnimation = false;
 
 	public DynamicGameObject(float x, float y, float width, float height) {
 		super(x, y, width, height);
@@ -53,6 +57,10 @@ public class DynamicGameObject extends GameObject {
 	}
 	
 	public void update(float dt) {
+		animation.update(dt);
+	}
+	
+	public void update(float dt, Vector2 globalCoordinates){
 		animation.update(dt);
 	}
 	

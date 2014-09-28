@@ -2,6 +2,7 @@ package com.mist.renderers;
 
 import org.w3c.dom.css.Rect;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -48,12 +49,27 @@ public class WorldRenderer {
 	}
 	
 	public void render(){
+		//worldGrid();
 		//renderTestRectangle();
 		renderTexture(world.dynamTest);
 		renderTexture(world.testTex);
 		renderTexture(world.test2);
 		renderTexture(world.test3);
 		renderTexture(world.test4);
+		renderTexture(world.hero);
+	}
+	
+	public void worldGrid(){
+		Gdx.gl.glLineWidth(2);
+		dbgrenderer.begin(ShapeType.Line);
+		dbgrenderer.setColor(Color.BLACK);
+		for(int i = 0; i < 64; i++){
+			dbgrenderer.line(0, 32*i, 2048, 32*i);
+		}
+		for(int i = 0; i < 64; i++){
+			dbgrenderer.line(32*i, 0, 32*i, 2048);
+		}
+		dbgrenderer.end();
 	}
 	
 	private void renderTestRectangle(){
