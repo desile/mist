@@ -14,5 +14,9 @@ public class DesktopLauncher {
 	}
 }
 ```
+
+<i>prepare7</i> commit preview
+![prepare7](http://ipic.su/img/img7/fs/kiss_219kb.1412890735.png)
+
 <i>prepare5.2</i> commit preview
 ![prepare5.2](gitdata/prepare5.gif)
