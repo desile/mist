@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mist.game.MistGame;
 
 public class GameObject {
 	
@@ -16,16 +17,20 @@ public class GameObject {
 	protected Texture tex;
 	protected TextureRegion texRegion;
 	
-	public GameObject(Vector2 position, Vector2 rec){ //links constructor
+	protected String textureName;
+	
+	public GameObject(Vector2 position, Vector2 rec, String textureName){ //links constructor
 		this.position = position;
 		this.bounds = new Rectangle(position.x, position.y, rec.x, rec.y);
-		initTest();
+		this.textureName = textureName;
+		initIMG();
 	}
 	
-	public GameObject (float x, float y, float width, float height) {
+	public GameObject (float x, float y, float width, float height, String textureName) {
 		this.position = new Vector2(x, y);
 		this.bounds = new Rectangle(x, y, width, height);
-		initTest();
+		this.textureName = textureName;
+		initIMG();
 	}
 	
 	public Vector2 getPosition(){
@@ -36,8 +41,14 @@ public class GameObject {
 		return bounds;
 	}
 	
-	private void initTest(){
-		tex = new Texture("test_male.png");
+	public Vector2 centerPosition(){
+		return new Vector2(position.x + bounds.width/2, position.y + bounds.height/2);
+	}
+	
+	
+	
+	private void initIMG(){
+		tex = MistGame.content.getTexture(textureName);
 		bounds.width = tex.getWidth();
 		bounds.height = tex.getHeight();
 	}

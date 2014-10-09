@@ -22,13 +22,10 @@ public class WorldRenderer {
 	
 	private World world;
 	public OrthographicCamera camera;
-	ShapeRenderer dbgrenderer = new ShapeRenderer(); //TODO: Орагнизовать возможности дебагмода (рендерятся только контуры объектов, без текстур)
-	SpriteBatch sb;
+	private ShapeRenderer dbgrenderer = new ShapeRenderer(); //TODO: Орагнизовать возможности дебагмода (рендерятся только контуры объектов, без текстур)
+	private SpriteBatch sb;
 	
-	public int width;
-	public int height;
-	
-	public boolean debug = true;
+	private boolean debug = true;
 	
 	//TODO: Составить регламент по работе камер
 	
@@ -37,7 +34,7 @@ public class WorldRenderer {
 		//TODO: ZOOM for camera
 		this.camera = new OrthographicCamera(MistGame.WINDOW_WIDTH, MistGame.WINDOW_HEIGHT);
 		//camera.setToOrtho(false);
-		camera.position.set(50,70,0);
+		camera.position.set(world.hero.centerPosition().x,world.hero.centerPosition().y,0);
 		camera.zoom = 1.3f;
 		camera.update();
 		sb = new SpriteBatch();
@@ -50,13 +47,27 @@ public class WorldRenderer {
 	
 	public void render(){
 		//worldGrid();
+		world.mapHandler.renderBack(camera);
 		//renderTestRectangle();
 		renderTexture(world.dynamTest);
 		renderTexture(world.testTex);
 		renderTexture(world.test2);
 		renderTexture(world.test3);
 		renderTexture(world.test4);
+		
 		renderTexture(world.hero);
+		world.mapHandler.renderFront(camera);
+		
+		update();
+	}
+	
+	public void update(){
+		camera.position.set(world.hero.centerPosition().x,world.hero.centerPosition().y,0);
+		camera.zoom = 1.3f;
+		camera.update();
+		sb.setProjectionMatrix(camera.combined);
+		
+		dbgrenderer.setProjectionMatrix(camera.combined);
 	}
 	
 	public void worldGrid(){
@@ -69,18 +80,6 @@ public class WorldRenderer {
 		for(int i = 0; i < 64; i++){
 			dbgrenderer.line(32*i, 0, 32*i, 2048);
 		}
-		dbgrenderer.end();
-	}
-	
-	private void renderTestRectangle(){
-		DynamicGameObject testRect = world.testRect;
-		dbgrenderer.begin(ShapeType.Line);
-		
-		Rectangle rect = testRect.getBounds();
-		float x1 = testRect.getPosition().x + rect.x;
-		float y1 = testRect.getPosition().y + rect.y;
-		dbgrenderer.setColor(new Color(1, 0, 0, 1));
-		dbgrenderer.rect(x1, y1, rect.width, rect.height);
 		dbgrenderer.end();
 	}
 	
