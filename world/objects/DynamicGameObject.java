@@ -3,7 +3,6 @@ package com.mist.world.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.mist.controllers.Animation;
-import com.mist.game.MistGame;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector;
@@ -25,28 +24,26 @@ public class DynamicGameObject extends GameObject {
 	public float velocity = 1.5f;
 	protected boolean playAnimation = false;
 
-	public DynamicGameObject(float x, float y, float width, float height,Direction dir, String textureName) {
-		super(x, y, width, height,textureName);
-		direction = dir;
-		state = State.NONE;
-		animation = new Animation();
-		initIMG();
-	}
-	
-	public DynamicGameObject(Vector2 position, Vector2 rec,String textureName){
-		super(position, rec,textureName);
+	public DynamicGameObject(float x, float y, float width, float height) {
+		super(x, y, width, height);
 		direction = Direction.SOUTH;
 		state = State.NONE;
 		animation = new Animation();
-		initIMG();
 	}
 	
-	public DynamicGameObject(Vector2 position, Vector2 rec, Direction dir,String textureName){
-		super(position, rec,textureName);
+	public DynamicGameObject(Vector2 position, Vector2 rec){
+		super(position, rec);
+		direction = Direction.SOUTH;
+		state = State.NONE;
+		animation = new Animation();
+	}
+	
+	public DynamicGameObject(Vector2 position, Vector2 rec, Direction dir){
+		super(position, rec);
 		direction = dir;
 		state = State.NONE;
 		animation = new Animation();
-		initIMG();
+		//initTest();
 	}
 	
 	public void setAnimation(TextureRegion reg, float delay) {
@@ -73,49 +70,6 @@ public class DynamicGameObject extends GameObject {
 		sb.end();
 	}
 	
-protected void initIMG(){
-		
-		int dirCoeffitient = 0;
-		switch (direction) {
-		case SOUTH:
-			dirCoeffitient = 0;
-			break;
-		case WEST:
-			dirCoeffitient = 1;
-			break;
-		case EAST:
-			dirCoeffitient = 2;
-			break;
-		case NORTH:
-			dirCoeffitient = 3;
-			break;
-			
-		default:
-			break;
-		}
-		
-		tex = MistGame.content.getTexture(textureName);//TODO: Создать класс-каталог/коллекцию для работы с ресурсами
-			TextureRegion[] sprites;//Четыре кадра анимации (собираем куски из текстуры в массив регионов)
-		
-		if(playAnimation){
-			sprites = new TextureRegion[4];//Четыре кадра анимации (собираем куски из текстуры в массив регионов);
-			for(int i = 0; i < sprites.length-1; i++) {
-				sprites[i] = new TextureRegion(tex, i * 32, dirCoeffitient*32, 32, 32);
-			}
-			sprites[3] = new TextureRegion(tex, 1 * 32, dirCoeffitient*32, 32, 32);
-		}
-		else{
-			sprites = new TextureRegion[1];
-			sprites[0] = new TextureRegion(tex, 1*32,dirCoeffitient*32,32,32);
-		}
-			
-		animation.setFrames(sprites, 1 / 4f);
-		
-		bounds.width = sprites[0].getRegionWidth();
-		bounds.height = sprites[0].getRegionHeight();
-		
-	}
-
 	
 
 }
