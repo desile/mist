@@ -1,10 +1,9 @@
 package com.mist.screens;
 
-import sun.net.www.content.audio.x_aiff;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.mist.controllers.WorldController;
@@ -26,11 +25,76 @@ public class GameScreen implements Screen { //implements InputProcessor?
 	private WorldRenderer renderer;
 	private WorldController controller;
 	
+	private Vector2 click;
+	
 	public GameScreen(MistGame game){
 		this.game = game;
 		world = new World();
 		renderer = new WorldRenderer(world);
 		controller = new WorldController(world);
+		
+		click = new Vector2();
+		
+		
+		//Create own class for inputprocessor
+		//TODO: or move to WorldController class
+		Gdx.input.setInputProcessor(new InputProcessor() {
+			
+			@Override
+			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean touchDragged(int screenX, int screenY, int pointer) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+				if (button == Input.Buttons.LEFT) {
+                    click = onMouseDown();
+                    //ВРЕМЕННАЯ МЕРА (ОПЦИОНАЛЬНО) для центрирования передвижения персонажа
+                    	click.x -= world.hero.getBounds().width/2;
+                    	click.y -= world.hero.getBounds().height/2;
+                    return true;
+                }
+                return false;
+			}
+			
+			@Override
+			public boolean scrolled(int amount) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean mouseMoved(int screenX, int screenY) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean keyUp(int keycode) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean keyTyped(char character) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean keyDown(int keycode) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+		
 	}
 	
 	@Override
@@ -39,19 +103,7 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		
-		if (Gdx.input.isTouched()) { //TODO: В последствии заменить делитель с масштаба на зум
-			Vector2 v = getWorldCoordinates(Gdx.input.getX(), Gdx.input.getY());
-			if(oldVec.x == v.x && oldVec.y == v.y){
-				//return;
-			}
-			else{
-				System.out.println("Input occurred at x=" + v.x + ", y=" + v.y);
-				oldVec = new Vector2(v);
-			}
-		}
-		
-		
-		controller.update(delta,getWorldCoordinates(Gdx.input.getX(), Gdx.input.getY()));
+		controller.update(delta,click);
 		renderer.render();
 		
 	}
@@ -60,12 +112,6 @@ public class GameScreen implements Screen { //implements InputProcessor?
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public Vector2 getWorldCoordinates(int screenX,int screenY){
-		int x = (int) ((Gdx.input.getX() - MistGame.getWidth()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.x);
-		int y =	(int) (((MistGame.getHeight() - Gdx.input.getY()) - MistGame.getHeight()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.y);
-		return new Vector2(x, y);
 	}
 	
 	
@@ -98,6 +144,19 @@ public class GameScreen implements Screen { //implements InputProcessor?
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private Vector2 onMouseDown(){
+		//Универсальный перевод системы координат
+		
+		int x = (int) ((Gdx.input.getX() - MistGame.getWidth()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.x);
+		int y =	(int) (((MistGame.getHeight() - Gdx.input.getY()) - MistGame.getHeight()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.y);
+		Vector2 v = new Vector2(x,y);
+		
+		System.out.println("Input occurred at x=" + v.x + ", y=" + v.y);
+		oldVec = new Vector2(v);
+		
+		return v;
 	}
 
 }

@@ -13,12 +13,19 @@ public class MistGame extends Game{
 	public static final int WINDOW_WIDTH = 480;
 	public static final int WINDOW_HEIGHT = 320;
 	public static final int WINDOW_SCALE = 2;
+	
+	public static Content content = new Content();
 
 	
 	@Override
 	public void create() {
 		System.out.println("Game");
+		initTextures();
 		setScreen(new GameScreen(this));
+	}
+	
+	public void initTextures(){
+		content.loadTexture("test_male.png", "testMale");
 	}
 	
 	public static int getHeight(){
