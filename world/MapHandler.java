@@ -15,10 +15,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class MapHandler {
 
-	public TiledMap map;
-	public OrthogonalTiledMapRenderer renderer;
+	private TiledMap map;
+	private OrthogonalTiledMapRenderer renderer;
 	
-	public MapObjects objects;
+	private MapObjects objects;
 	
 	public MapHandler(){
 		TmxMapLoader loader = new TmxMapLoader();
@@ -53,6 +53,22 @@ public class MapHandler {
 		renderer.setView(camera);
 		int[] renderedLayer = {2};
 		renderer.render(renderedLayer);
+	}
+
+	public TiledMap getMap() {
+		return map;
+	}
+
+	public void setMap(TiledMap map) {
+		this.map = map;
+	}
+
+	public MapObjects getObjects() {
+		return objects;
+	}
+
+	public void setObjects(MapObjects objects) {
+		this.objects = objects;
 	}
 	
 }

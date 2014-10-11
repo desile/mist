@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.mist.game.MistGame;
 import com.mist.world.World;
@@ -49,19 +51,34 @@ public class WorldRenderer {
 		//worldGrid();
 		world.mapHandler.renderBack(camera);
 		//renderTestRectangle();
-		renderTexture(world.dynamTest);
+		/*renderTexture(world.dynamTest);
 		renderTexture(world.testTex);
 		renderTexture(world.test2);
 		renderTexture(world.test3);
-		renderTexture(world.test4);
+		renderTexture(world.test4);*/
 		
 		renderTexture(world.hero);
 		world.mapHandler.renderFront(camera);
-		
-		update();
+		mapDebugObjects();
+		updateCamera();
 	}
 	
-	public void update(){
+	
+	private void mapDebugObjects(){
+		for (MapObject rectangleObject : world.mapHandler.getMap().getLayers().get("collision").getObjects()) {
+			//TODO: Сделать определение классов объектов и по разному их обрабатывать (пока только ректанглы)
+		    Rectangle rectangle = ((RectangleMapObject) rectangleObject).getRectangle();
+		    if(debug){
+				dbgrenderer.begin(ShapeType.Line);
+				dbgrenderer.setColor(Color.BLUE);
+				dbgrenderer.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+				dbgrenderer.end();
+				
+			}
+		}
+	}
+	
+	private void updateCamera(){
 		camera.position.set(world.hero.centerPosition().x,world.hero.centerPosition().y,0);
 		camera.zoom = 1.3f;
 		camera.update();
@@ -70,7 +87,7 @@ public class WorldRenderer {
 		dbgrenderer.setProjectionMatrix(camera.combined);
 	}
 	
-	public void worldGrid(){
+	private void worldGrid(){
 		Gdx.gl.glLineWidth(2);
 		dbgrenderer.begin(ShapeType.Line);
 		dbgrenderer.setColor(Color.BLACK);

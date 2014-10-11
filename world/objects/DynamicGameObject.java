@@ -22,7 +22,7 @@ public class DynamicGameObject extends GameObject {
 	protected Direction direction;
 	protected State state;
 	protected Animation animation;
-	public float velocity = 1.5f;
+	protected float velocity = 1.5f;
 	protected boolean playAnimation = false;
 
 	public DynamicGameObject(float x, float y, float width, float height,Direction dir, String textureName) {
@@ -115,6 +115,30 @@ protected void initIMG(){
 		bounds.height = sprites[0].getRegionHeight();
 		
 	}
+
+public float getVelocity() {
+	return velocity;
+}
+
+public void setVelocity(float velocity) {
+	this.velocity = velocity;
+}
+
+public State getState() {
+	return state;
+}
+
+public void setState(State state) {
+	this.state = state;
+}
+
+public boolean isPlayAnimation() {
+	return playAnimation;
+}
+
+public void setPlayAnimation(boolean playAnimation) {
+	this.playAnimation = playAnimation;
+}
 
 	
 

@@ -35,6 +35,6 @@ public class World {
 		test3 = new DynamicGameObject(100, -20, 50,50,Direction.EAST,"testMale");
 		test4 = new DynamicGameObject(100, -70, 50,50,Direction.NORTH,"testMale");
 		
-		hero = new Player(100, 120, 50,50,Direction.SOUTH);
+		hero = new Player(100, 120, 50,50,Direction.SOUTH,this);
 	}
 }

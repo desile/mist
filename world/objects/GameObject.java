@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mist.game.MistGame;
+import com.mist.world.World;
 
 public class GameObject {
 	
@@ -16,6 +17,8 @@ public class GameObject {
 	protected Rectangle bounds;
 	protected Texture tex;
 	protected TextureRegion texRegion;
+	
+	protected World currentWorld; //временно?
 	
 	protected String textureName;
 	
@@ -44,8 +47,6 @@ public class GameObject {
 	public Vector2 centerPosition(){
 		return new Vector2(position.x + bounds.width/2, position.y + bounds.height/2);
 	}
-	
-	
 	
 	private void initIMG(){
 		tex = MistGame.content.getTexture(textureName);
