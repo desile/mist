@@ -21,8 +21,8 @@ public class Player extends DynamicGameObject {
 	protected boolean moreCollisions = false;
 	//TODO: Продумать и организовать систему наследования объектов
 	
-	public Player(Vector2 position, Vector2 rec, Direction dir, World world) {
-		super(position, rec, dir, "testMale");
+	public Player(Vector2 bounds, Vector2 rec, Direction dir, World world) {
+		super(bounds, rec, dir, "testMale");
 		//TODO: Написать автомат или мэнэджер статусов
 		this.state = State.STAND;
 		this.currentWorld = world;
@@ -60,7 +60,8 @@ public class Player extends DynamicGameObject {
 		destination = global;
 		
 		if(global == null){
-			destination = position; //если координат передано не было, то текущее место и есть цель
+			destination.x = bounds.x; //если координат передано не было, то текущее место и есть цель
+			destination.y = bounds.y;
 		}
 		
 		if (Gdx.input.isTouched()) {
@@ -77,27 +78,66 @@ public class Player extends DynamicGameObject {
 			justTouched = true;
 			//initTest();
 		}
-			/*if(xIn!=position.x){
-				if(xIn < position.x){
+			/*if(xIn!=bounds.x){
+				if(xIn < bounds.x){
 					newDir = Direction.WEST;
-					position.x--;
+					bounds.x--;
 				}
-				if(xIn > position.x){
+				if(xIn > bounds.x){
 					newDir = Direction.EAST;
-					position.x++;
+					bounds.x++;
 				}
 			}
 			else{
-				if(yIn < position.y){
+				if(yIn < bounds.y){
 					newDir = Direction.SOUTH;
-					position.y--;
+					bounds.y--;
 				}
-				if(yIn > position.y){
+				if(yIn > bounds.y){
 					newDir = Direction.NORTH;
-					position.y++;
+					bounds.y++;
 				}
 			}*/
 			if(state == State.WALKING){
+				
+				//когда персонаж входит в тупик - есть один путь обратно
+				//все из-за того дерьма, что если ему дать возможость пройти в другом направлении,
+				//то он как, мать его, коперфильд пройдет сквозь стены!
+				//ДВА ДНЯ ПЫТАЛСЯ ПОФИКСИТЬ - НО НИХ*Я!
+				if(moreCollisions){
+					if(!ableToMove.Up && !ableToMove.Right){
+						if(!(destination.x < bounds.x && destination.y < bounds.y)){
+							playAnimation = false;
+							initIMG();
+							return;
+						}
+					}
+					if(!ableToMove.Down && !ableToMove.Right){
+						if(!(destination.x < bounds.x && destination.y > bounds.y)){
+							playAnimation = false;
+							initIMG();
+							return;
+						}
+					}
+					if(!ableToMove.Up && !ableToMove.Left){
+						if(!(destination.x > bounds.x && destination.y < bounds.y)){
+							playAnimation = false;
+							initIMG();
+							return;
+						}
+					}
+					if(!ableToMove.Down && !ableToMove.Left){
+						if(!(destination.x > bounds.x && destination.y > bounds.y)){
+							playAnimation = false;
+							initIMG();
+							return;
+						}
+					}
+				}
+				
+				
+				
+				
 				Rectangle nextPosition = new Rectangle(bounds);
 				
 				int smoothWay = (int) (velocity/2);
@@ -106,173 +146,187 @@ public class Player extends DynamicGameObject {
 				//то есть если скорость героя 3 пикселя, то он может случайно "проскочить"
 				//нужный пиксель и застрять с невыполненным условием
 				//smooth - проверяет условия с учетом этой погрешности
-				boolean canSmoothX = destination.x < (position.x - smoothWay) || destination.x > (position.x + smoothWay);
-				boolean canSmoothY = destination.y < (position.y - smoothWay) || destination.y > (position.y + smoothWay);
+				boolean canSmoothX = destination.x < (bounds.x - smoothWay) || destination.x > (bounds.x + smoothWay);
+				boolean canSmoothY = destination.y < (bounds.y - smoothWay) || destination.y > (bounds.y + smoothWay);
 				
-				float wayX = Math.abs(position.x - destination.x);
-				float wayY = Math.abs(position.y - destination.y);
+				float wayX = Math.abs(bounds.x - destination.x);
+				float wayY = Math.abs(bounds.y - destination.y);
 				boolean longWay = wayX > wayY;
 				
 				longWay = !longWay; //опциональное изменение логики смены анимации
 				
-				if(canSmoothX && canSmoothY){
-						//TODO: Уменьшить скорость для диагонального движения
-						//(problem with smoothWay - animation bug)
-						if(destination.x < position.x && destination.y < position.y){
-							if(longWay) newDir = Direction.SOUTH;
-							else newDir = Direction.WEST;
-							nextPosition.x-=velocity;//Math.sqrt(2);
-							nextPosition.y-=velocity;//Math.sqrt(2);
+				
+					if(canSmoothX && canSmoothY){
+							//TODO: Уменьшить скорость для диагонального движения
+							//(problem with smoothWay - animation bug)
+							if(destination.x < bounds.x && destination.y < bounds.y){
+								if(longWay) newDir = Direction.SOUTH;
+								else newDir = Direction.WEST;
+								nextPosition.x-=velocity;//Math.sqrt(2);
+								nextPosition.y-=velocity;//Math.sqrt(2);
+							}
+							if(destination.x < bounds.x && destination.y > bounds.y){
+								if(longWay) newDir = Direction.NORTH;
+								else newDir = Direction.WEST;
+								nextPosition.x-=velocity;//Math.sqrt(2);
+								nextPosition.y+=velocity;//Math.sqrt(2);
+							}
+							if(destination.x > bounds.x && destination.y < bounds.y){
+								if(longWay)newDir = Direction.SOUTH;
+								else newDir = Direction.EAST;
+								nextPosition.x+=velocity;//Math.sqrt(2);
+								nextPosition.y-=velocity;//Math.sqrt(2);
+							}
+							if(destination.x > bounds.x && destination.y > bounds.y){
+								if(longWay) newDir = Direction.NORTH;
+								else newDir = Direction.EAST;
+								nextPosition.x+=velocity;//Math.sqrt(2);
+								nextPosition.y+=velocity;//Math.sqrt(2);
+							}
+					}
+					else if(canSmoothX){
+							if(destination.x < bounds.x){
+								newDir = Direction.WEST;
+								nextPosition.x-=velocity;
+							}
+							if(destination.x > bounds.x){
+								newDir = Direction.EAST;
+								nextPosition.x+=velocity;
+							}
 						}
-						if(destination.x < position.x && destination.y > position.y){
-							if(longWay) newDir = Direction.NORTH;
-							else newDir = Direction.WEST;
-							nextPosition.x-=velocity;//Math.sqrt(2);
-							nextPosition.y+=velocity;//Math.sqrt(2);
+						else if (canSmoothY){
+							if(destination.y < bounds.y){
+								newDir = Direction.SOUTH;
+								nextPosition.y-=velocity;
+							}
+							if(destination.y > bounds.y){
+								newDir = Direction.NORTH;
+								nextPosition.y+=velocity;
+							}
 						}
-						if(destination.x > position.x && destination.y < position.y){
-							if(longWay)newDir = Direction.SOUTH;
-							else newDir = Direction.EAST;
-							nextPosition.x+=velocity;//Math.sqrt(2);
-							nextPosition.y-=velocity;//Math.sqrt(2);
+						else {
+							state = State.STAND;
+							playAnimation = false;
+							initIMG();
 						}
-						if(destination.x > position.x && destination.y > position.y){
-							if(longWay) newDir = Direction.NORTH;
-							else newDir = Direction.EAST;
-							nextPosition.x+=velocity;//Math.sqrt(2);
-							nextPosition.y+=velocity;//Math.sqrt(2);
+					
+					int contacts = contactListen(nextPosition);
+					
+					if(contacts == 0){//если препятствий нет
+						ableToMove.unlockAll();
+						bounds.x = nextPosition.x;
+						bounds.y = nextPosition.y;
+					}
+					else{
+						if(contactListen(new Rectangle(bounds).setX(bounds.x + velocity)) > 0){
+							System.out.println("right is lock");
+							ableToMove.Right = false;
 						}
-				}
-				else if(canSmoothX){
-						if(destination.x < position.x){
-							newDir = Direction.WEST;
-							nextPosition.x-=velocity;
+						if(contactListen(new Rectangle(bounds).setY(bounds.y + velocity))> 0){
+							System.out.println("up is lock");
+							ableToMove.Up = false;
 						}
-						if(destination.x > position.x){
-							newDir = Direction.EAST;
-							nextPosition.x+=velocity;
+						if(contactListen(new Rectangle(bounds).setX(bounds.x - velocity))> 0){
+							System.out.println("left is lock");
+							ableToMove.Left = false;
+						}
+						if(contactListen(new Rectangle(bounds).setY(bounds.y - velocity))> 0){
+							System.out.println("down is lock");
+							ableToMove.Down = false;
 						}
 					}
-					else if (canSmoothY){
-						if(destination.y < position.y){
-							newDir = Direction.SOUTH;
-							nextPosition.y-=velocity;
+					
+					//TODO:
+					//Сделать булеаны по возможности движению по направлениям
+					//Осуществлять сначала проверку - где движение заблокировано
+					//Потом использовать эту информацию, чтобы не допускать движения по этим направлениям
+					
+					//TODO: ДО ЛУЧШИХ ВРЕМЕН
+					if(contacts == 1){
+						//nextPosition = new Rectangle(bounds);
+						//если есть, то в каком направлении
+						//TODO: Проблема, которую стоит ли решать?
+						//Когда персонаж обходит препятствие и при этом достигает одну из нужных координат по х или у - останавливается
+						if(!ableToMove.Right){
+							if(canSmoothY){
+								if(destination.y > bounds.y){
+									newDir = Direction.NORTH;
+									bounds.y += velocity;
+								}
+								if(destination.y < bounds.y){
+									newDir = Direction.SOUTH;
+									bounds.y -= velocity;
+								}
+							}
+							if(!canSmoothY){
+								playAnimation = false;
+								initIMG();
+							}
 						}
-						if(destination.y > position.y){
-							newDir = Direction.NORTH;
-							nextPosition.y+=velocity;
+						if(!ableToMove.Up){
+							if(canSmoothX){
+								if(destination.x < bounds.x){
+									newDir = Direction.WEST;
+									bounds.x-=velocity;
+								}
+								if(destination.x > bounds.x){
+									newDir = Direction.EAST;
+									bounds.x+=velocity;
+								}
+							}
+							if(!canSmoothX){
+								playAnimation = false;
+								initIMG();
+							}
+						}
+						if(!ableToMove.Left){
+							if(canSmoothY){
+								if(destination.y > bounds.y){
+									newDir = Direction.NORTH;
+									bounds.y += velocity;
+								}
+								if(destination.y < bounds.y){
+									newDir = Direction.SOUTH;
+									bounds.y -= velocity;
+								}
+							}
+							if(!canSmoothY){
+								playAnimation = false;
+								initIMG();
+							}
+						}
+						if(!ableToMove.Down){
+							if(canSmoothX){
+								if(destination.x < bounds.x){
+									newDir = Direction.WEST;
+									bounds.x-=velocity;
+								}
+								if(destination.x > bounds.x){
+									newDir = Direction.EAST;
+									bounds.x+=velocity;
+								}
+							}
+							if(!canSmoothX){
+								playAnimation = false;
+								initIMG();
+							}
 						}
 					}
-					else {
-						state = State.STAND;
+					else if(contacts > 1){
 						playAnimation = false;
 						initIMG();
+						System.out.println("more collisions");
+						moreCollisions = true;
 					}
-				
-				int contacts = contactListen(nextPosition);
-				
-				if(contacts == 0){//если препятствий нет
-					position.x = nextPosition.x;
-					position.y = nextPosition.y;
-				}
-				
-				//TODO:
-				//Сделать булеаны по возможности движению по направлениям
-				//Осуществлять сначала проверку - где движение заблокировано
-				//Потом использовать эту информацию, чтобы не допускать движения по этим направлениям
-				
-				else if(contacts == 1){
-					//nextPosition = new Rectangle(bounds);
-					//если есть, то в каком направлении
-					//TODO: Проблема, которую стоит ли решать?
-					//Когда персонаж обходит препятствие и при этом достигает одну из нужных координат по х или у - останавливается
-					if(contactListen(new Rectangle(bounds).setX(position.x + velocity)) > 0){
-						System.out.println("right is lock");
-						/*if(canSmoothY){
-							if(destination.y > position.y){
-								newDir = Direction.NORTH;
-								position.y += velocity;
-							}
-							if(destination.y < position.y){
-								newDir = Direction.SOUTH;
-								position.y -= velocity;
-							}
-						}
-						if(!canSmoothY){
-							playAnimation = false;
-							initIMG();
-						}*/
+					
+					if(curDir != newDir){
+						direction = newDir;
+						initIMG();
 					}
-					if(contactListen(new Rectangle(bounds).setY(position.y + velocity))> 0){
-						System.out.println("up is lock");
-						if(canSmoothX){
-							if(destination.x < position.x){
-								newDir = Direction.WEST;
-								position.x-=velocity;
-							}
-							if(destination.x > position.x){
-								newDir = Direction.EAST;
-								position.x+=velocity;
-							}
-						}
-						if(!canSmoothX){
-							playAnimation = false;
-							initIMG();
-						}
-					}
-					if(contactListen(new Rectangle(bounds).setX(position.x - velocity))> 0){
-						System.out.println("left is lock");
-						if(canSmoothY){
-							if(destination.y > position.y){
-								newDir = Direction.NORTH;
-								position.y += velocity;
-							}
-							if(destination.y < position.y){
-								newDir = Direction.SOUTH;
-								position.y -= velocity;
-							}
-						}
-						if(!canSmoothY){
-							initIMG();
-							playAnimation = false;
-						}
-					}
-					if(contactListen(new Rectangle(bounds).setY(position.y - velocity))> 0){
-						System.out.println("down is lock");
-						if(canSmoothX){
-							if(destination.x < position.x){
-								newDir = Direction.WEST;
-								position.x-=velocity;
-							}
-							if(destination.x > position.x){
-								newDir = Direction.EAST;
-								position.x+=velocity;
-							}
-						}
-						if(!canSmoothX){
-							playAnimation = false;
-							initIMG();
-						}
-					}
-				}
-				else{
-					playAnimation = false;
-					initIMG();
-					System.out.println("more collisions");
-					moreCollisions = true;
-				}
-				
-				if(curDir != newDir){
-					direction = newDir;
-					initIMG();
-				}
-				
-				//копируем координаты
-				bounds.x = position.x;
-				bounds.y = position.y;
-				
-				
-			}
+
+					//копируем координаты
+						bounds.x = bounds.x;
+						bounds.y = bounds.y;
 		}
-	
+	}
 }

@@ -6,6 +6,7 @@ import com.mist.controllers.Animation;
 import com.mist.game.MistGame;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 
@@ -24,6 +25,8 @@ public class DynamicGameObject extends GameObject {
 	protected Animation animation;
 	protected float velocity = 1.5f;
 	protected boolean playAnimation = false;
+
+	protected AbleToMove ableToMove = new AbleToMove();
 
 	public DynamicGameObject(float x, float y, float width, float height,Direction dir, String textureName) {
 		super(x, y, width, height,textureName);
@@ -69,7 +72,7 @@ public class DynamicGameObject extends GameObject {
 	
 	public void render(SpriteBatch sb) {
 		sb.begin();
-		sb.draw(animation.getFrame(),position.x,position.y);
+		sb.draw(animation.getFrame(),bounds.x,bounds.y);
 		sb.end();
 	}
 	
@@ -139,6 +142,9 @@ public boolean isPlayAnimation() {
 public void setPlayAnimation(boolean playAnimation) {
 	this.playAnimation = playAnimation;
 }
+
+
+
 
 	
 

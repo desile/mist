@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.mist.game.MistGame;
 import com.mist.world.World;
 import com.mist.world.objects.DynamicGameObject;
@@ -36,7 +37,7 @@ public class WorldRenderer {
 		//TODO: ZOOM for camera
 		this.camera = new OrthographicCamera(MistGame.WINDOW_WIDTH, MistGame.WINDOW_HEIGHT);
 		//camera.setToOrtho(false);
-		camera.position.set(world.hero.centerPosition().x,world.hero.centerPosition().y,0);
+		camera.position.set(world.hero.getBounds().getCenter(new Vector2()).x,world.hero.getBounds().getCenter(new Vector2()).y,0);
 		camera.zoom = 1.3f;
 		camera.update();
 		sb = new SpriteBatch();
@@ -79,7 +80,7 @@ public class WorldRenderer {
 	}
 	
 	private void updateCamera(){
-		camera.position.set(world.hero.centerPosition().x,world.hero.centerPosition().y,0);
+		camera.position.set(world.hero.getBounds().getCenter(new Vector2()).x,world.hero.getBounds().getCenter(new Vector2()).y,0);
 		camera.zoom = 1.3f;
 		camera.update();
 		sb.setProjectionMatrix(camera.combined);
@@ -105,8 +106,8 @@ public class WorldRenderer {
 		if(debug){
 			dbgrenderer.begin(ShapeType.Line);
 			Rectangle rect = obj.getBounds();
-			float x = obj.getPosition().x;
-			float y = obj.getPosition().y;
+			float x = obj.getBounds().x;
+			float y = obj.getBounds().y;
 			dbgrenderer.setColor(new Color(1, 0, 0, 1));
 			dbgrenderer.rect(x, y, rect.width, rect.height);
 			dbgrenderer.end();
