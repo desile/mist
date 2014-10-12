@@ -1,5 +1,14 @@
 package com.mist.renderers;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
+
 import org.w3c.dom.css.Rect;
 
 import com.badlogic.gdx.Gdx;
@@ -30,6 +39,8 @@ public class WorldRenderer {
 	
 	private boolean debug = true;
 	
+	private ArrayList<GameObject> renderQueue; 
+	
 	//TODO: Составить регламент по работе камер
 	
 	public WorldRenderer(World world){
@@ -45,20 +56,17 @@ public class WorldRenderer {
 		
 		dbgrenderer.setProjectionMatrix(camera.combined);
 		
+		renderQueue = new ArrayList<GameObject>();
+		
 		//System.out.println("")
 	}
 	
 	public void render(){
 		//worldGrid();
 		world.mapHandler.renderBack(camera);
-		//renderTestRectangle();
-		/*renderTexture(world.dynamTest);
-		renderTexture(world.testTex);
-		renderTexture(world.test2);
-		renderTexture(world.test3);
-		renderTexture(world.test4);*/
 		
-		renderTexture(world.hero);
+		renderObjects();
+		
 		world.mapHandler.renderFront(camera);
 		mapDebugObjects();
 		updateCamera();
@@ -77,6 +85,31 @@ public class WorldRenderer {
 				
 			}
 		}
+	}
+	
+	private void renderObjects(){
+		for(GameObject obj : world.objectHandler.objects){
+			renderQueue.add(obj);
+		}
+		renderQueue.add(world.hero);
+		
+		//сортировка по y координате объектов
+		Collections.sort(renderQueue, new Comparator<GameObject>() {
+
+			@Override
+			public int compare(GameObject arg0, GameObject arg1) {
+				return (int) (arg1.getBounds().y - arg0.getBounds().y);
+			}
+
+			
+		});
+		
+		for(GameObject obj : renderQueue){
+			renderTexture(obj);
+		}
+		
+		renderQueue.clear();
+		
 	}
 	
 	private void updateCamera(){

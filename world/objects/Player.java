@@ -19,6 +19,9 @@ public class Player extends DynamicGameObject {
 	protected boolean justTouched = false;
 	protected Vector2 destination = null;
 	protected boolean moreCollisions = false;
+	
+	public DynamicGameObject target;
+	
 	//TODO: Продумать и организовать систему наследования объектов
 	
 	public Player(Vector2 bounds, Vector2 rec, Direction dir, World world) {

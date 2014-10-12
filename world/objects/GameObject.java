@@ -50,4 +50,8 @@ public class GameObject {
 		sb.end();
 	}
 	
+	public void update(float dt) {
+		
+	}
+	
 }

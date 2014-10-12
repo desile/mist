@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mist.world.World;
+import com.mist.world.objects.GameObject;
 import com.mist.world.objects.DynamicGameObject.State;
 
 public class WorldController {
@@ -20,11 +21,14 @@ public class WorldController {
 	}
 	
 	public void update(float delta, Vector2 globalCoordinates){
-		world.dynamTest.update(delta);
-		world.test2.update(delta);
-		world.test3.update(delta);
-		world.test4.update(delta);
 		world.hero.update(delta,globalCoordinates);
+		updateObjects(delta);
+	}
+	
+	private void updateObjects(float delta){
+		for(GameObject obj : world.objectHandler.objects){
+			obj.update(delta);
+		}
 	}
 	
 }

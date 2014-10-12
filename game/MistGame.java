@@ -26,6 +26,7 @@ public class MistGame extends Game{
 	
 	public void initTextures(){
 		content.loadTexture("test_male.png", "testMale");
+		content.loadTexture("test_male2.png", "testMale2");
 	}
 	
 	public static int getHeight(){

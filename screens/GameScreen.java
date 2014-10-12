@@ -153,6 +153,8 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		int y =	(int) (((MistGame.getHeight() - Gdx.input.getY()) - MistGame.getHeight()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.y);
 		Vector2 v = new Vector2(x,y);
 		
+		
+		
 		System.out.println("Input occurred at x=" + v.x + ", y=" + v.y);
 		oldVec = new Vector2(v);
 		
