@@ -18,7 +18,7 @@ public class ObjectHandler{
 	private void initObjects(){
 		objects.add(new Enemy(500, 500, 32, 32, Direction.SOUTH, "testMale2"));
 		objects.add(new Enemy(160, 200, 32, 32, Direction.NORTH, "testMale2"));
-		objects.add(new Enemy(160, 250, 32, 32, Direction.WEST, "testMale2"));
+		objects.add(new Enemy(172, 222, 32, 32, Direction.WEST, "testMale2"));
 	}
 	
 }
