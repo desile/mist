@@ -20,6 +20,8 @@ public class Player extends DynamicGameObject {
 	protected Vector2 destination = null;
 	protected boolean moreCollisions = false;
 	
+	private GameObject goalObject;
+	
 	public DynamicGameObject target;
 	
 	//TODO: Продумать и организовать систему наследования объектов
@@ -50,7 +52,26 @@ public class Player extends DynamicGameObject {
 		    //else world.hero.state = State.WALKING;
 		    //else world.hero.velocity = 1.5f;
 		}
+		for(GameObject object : currentWorld.objectHandler.objects){
+			Rectangle rectangle = object.bounds;
+			if(Intersector.overlaps(rectangle, bounds) && object.isObstruction()){
+				overlaps++;
+			}
+		}
 		return overlaps;
+	}
+	
+	private boolean interactWithGoal(){
+		if(goalObject!=null)
+			if(Intersector.overlaps(goalObject.bounds, bounds) && goalObject.clicked){
+				state = State.STAND;
+				playAnimation = false;
+				destination = null;
+				initIMG();
+				goalObject.action();
+				return true;
+			}
+		return false;
 	}
 	
 	
@@ -101,7 +122,7 @@ public class Player extends DynamicGameObject {
 					bounds.y++;
 				}
 			}*/
-			if(state == State.WALKING){
+		if(state == State.WALKING){
 				
 				//когда персонаж входит в тупик - есть один путь обратно
 				//все из-за того дерьма, что если ему дать возможость пройти в другом направлении,
@@ -161,6 +182,7 @@ public class Player extends DynamicGameObject {
 				
 					if(canSmoothX && canSmoothY){
 							//TODO: Уменьшить скорость для диагонального движения
+							//TODO: Исправить скорость при прохождении между двумя объектами
 							//(problem with smoothWay - animation bug)
 							if(destination.x < bounds.x && destination.y < bounds.y){
 								if(longWay) newDir = Direction.SOUTH;
@@ -222,27 +244,22 @@ public class Player extends DynamicGameObject {
 					}
 					else{
 						if(contactListen(new Rectangle(bounds).setX(bounds.x + velocity)) > 0){
-							System.out.println("right is lock");
+							//System.out.println("right is lock");
 							ableToMove.Right = false;
 						}
 						if(contactListen(new Rectangle(bounds).setY(bounds.y + velocity))> 0){
-							System.out.println("up is lock");
+							//System.out.println("up is lock");
 							ableToMove.Up = false;
 						}
 						if(contactListen(new Rectangle(bounds).setX(bounds.x - velocity))> 0){
-							System.out.println("left is lock");
+							//System.out.println("left is lock");
 							ableToMove.Left = false;
 						}
 						if(contactListen(new Rectangle(bounds).setY(bounds.y - velocity))> 0){
-							System.out.println("down is lock");
+							//System.out.println("down is lock");
 							ableToMove.Down = false;
 						}
 					}
-					
-					//TODO:
-					//Сделать булеаны по возможности движению по направлениям
-					//Осуществлять сначала проверку - где движение заблокировано
-					//Потом использовать эту информацию, чтобы не допускать движения по этим направлениям
 					
 					//TODO: ДО ЛУЧШИХ ВРЕМЕН
 					if(contacts == 1){
@@ -326,10 +343,17 @@ public class Player extends DynamicGameObject {
 						direction = newDir;
 						initIMG();
 					}
+			}
+		
+		interactWithGoal();
+	
+	}
 
-					//копируем координаты
-						bounds.x = bounds.x;
-						bounds.y = bounds.y;
-		}
+	public GameObject getGoalObject() {
+		return goalObject;
+	}
+
+	public void setGoalObject(GameObject goalObject) {
+		this.goalObject = goalObject;
 	}
 }

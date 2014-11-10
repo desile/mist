@@ -37,7 +37,7 @@ public class WorldRenderer {
 	private ShapeRenderer dbgrenderer = new ShapeRenderer(); //TODO: Орагнизовать возможности дебагмода (рендерятся только контуры объектов, без текстур)
 	private SpriteBatch sb;
 	
-	private boolean debug = true;
+	private boolean debug = false;
 	
 	private ArrayList<GameObject> renderQueue; 
 	
@@ -64,7 +64,6 @@ public class WorldRenderer {
 	public void render(){
 		//worldGrid();
 		world.mapHandler.renderBack(camera);
-		
 		renderObjects();
 		
 		world.mapHandler.renderFront(camera);

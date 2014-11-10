@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
+import com.mist.controllers.GameInputController;
 import com.mist.controllers.WorldController;
 import com.mist.game.MistGame;
 import com.mist.renderers.WorldRenderer;
@@ -38,60 +39,32 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		
 		//Create own class for inputprocessor
 		//TODO: or move to WorldController class
-		Gdx.input.setInputProcessor(new InputProcessor() {
-			
-			@Override
-			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public boolean touchDragged(int screenX, int screenY, int pointer) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
+		Gdx.input.setInputProcessor(new GameInputController() {
 			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 				if (button == Input.Buttons.LEFT) {
                     click = onMouseDown();
+                    clickedObject = world.objectHandler.searchObject(click);
+                    world.hero.setGoalObject(null);
+                    
+                    if(clickedObject!=null){
+                    	System.out.println("hello, yes, this is the object");
+                    	clickedObject.clicked = true;
+                    	world.hero.setGoalObject(clickedObject);
+                    }
+                    
+                    if(previousClickedObject!= null && previousClickedObject!=clickedObject)
+                    	previousClickedObject.clicked = false;//если было произведено нажатие на другой объект, то предыдущий перестает быть выбраным
+                    
+                    previousClickedObject = clickedObject;
+                    
                     //ВРЕМЕННАЯ МЕРА (ОПЦИОНАЛЬНО) для центрирования передвижения персонажа
                     	click.x -= world.hero.getBounds().width/2;
                     	click.y -= world.hero.getBounds().height/2;
+                    	
                     return true;
                 }
                 return false;
-			}
-			
-			@Override
-			public boolean scrolled(int amount) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public boolean mouseMoved(int screenX, int screenY) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public boolean keyUp(int keycode) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public boolean keyTyped(char character) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			@Override
-			public boolean keyDown(int keycode) {
-				// TODO Auto-generated method stub
-				return false;
 			}
 		});
 		
@@ -151,14 +124,14 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		
 		int x = (int) ((Gdx.input.getX() - MistGame.getWidth()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.x);
 		int y =	(int) (((MistGame.getHeight() - Gdx.input.getY()) - MistGame.getHeight()/2) * renderer.camera.zoom / MistGame.WINDOW_SCALE + (int)renderer.camera.position.y);
-		Vector2 v = new Vector2(x,y);
-		
-		
+		Vector2 v = new Vector2(x,y);	
 		
 		System.out.println("Input occurred at x=" + v.x + ", y=" + v.y);
 		oldVec = new Vector2(v);
 		
 		return v;
 	}
+	
+	
 
 }

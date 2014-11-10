@@ -21,6 +21,10 @@ public class GameObject {
 	
 	protected String textureName;
 	
+	protected boolean obstruction = false; //можно ли пройти сквозь объект (стандартно можно)
+	protected boolean interaction = false; //можно ли взаимодействовать с объектом (стандартно нельзя)
+	public boolean clicked = false;
+	
 	public GameObject(Vector2 position, Vector2 rec, String textureName){ //links constructor
 		this.bounds = new Rectangle(position.x, position.y, rec.x, rec.y);
 		this.textureName = textureName;
@@ -52,6 +56,19 @@ public class GameObject {
 	
 	public void update(float dt) {
 		
+	}
+
+	public boolean canInteraction() {
+		return interaction;
+	}
+
+	public boolean isObstruction() {
+		return obstruction;
+	}
+	
+	public void action(){
+		System.out.println("Action!!!");
+		clicked = false;
 	}
 	
 }
