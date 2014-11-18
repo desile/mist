@@ -1,7 +1,5 @@
 package com.mist.world.objects;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,6 +19,8 @@ public class Player extends DynamicGameObject {
 	protected boolean moreCollisions = false;
 	
 	private GameObject goalObject;
+	
+	public boolean inAction = false; //взаимодействует ли в данный момент
 	
 	public DynamicGameObject target;
 	
@@ -68,14 +68,17 @@ public class Player extends DynamicGameObject {
 				playAnimation = false;
 				destination = null;
 				initIMG();
-				goalObject.action();
 				return true;
 			}
+			else return false;
 		return false;
 	}
 	
 	
 	public void update(float dt, Vector2 global) {
+		inAction = interactWithGoal();
+		if(!inAction){ //если персонаж взаимодейтсвует с предметом
+								 //движение не осуществляется
 		animation.update(dt*velocity);
 		//int xIn=0,yIn=0;
 		Direction curDir = direction;
@@ -345,7 +348,8 @@ public class Player extends DynamicGameObject {
 					}
 			}
 		
-		interactWithGoal();
+		}
+		if(goalObject!=null) goalObject.action(inAction,this);
 	
 	}
 

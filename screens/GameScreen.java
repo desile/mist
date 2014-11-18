@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mist.controllers.GameInputController;
 import com.mist.controllers.WorldController;
 import com.mist.game.MistGame;
@@ -28,6 +29,8 @@ public class GameScreen implements Screen { //implements InputProcessor?
 	
 	private Vector2 click;
 	
+	private Stage uiStage;
+	
 	public GameScreen(MistGame game){
 		this.game = game;
 		world = new World();
@@ -35,7 +38,6 @@ public class GameScreen implements Screen { //implements InputProcessor?
 		controller = new WorldController(world);
 		
 		click = new Vector2();
-		
 		
 		//Create own class for inputprocessor
 		//TODO: or move to WorldController class
@@ -55,6 +57,7 @@ public class GameScreen implements Screen { //implements InputProcessor?
                     
                     if(previousClickedObject!= null && previousClickedObject!=clickedObject)
                     	previousClickedObject.clicked = false;//если было произведено нажатие на другой объект, то предыдущий перестает быть выбраным
+                    
                     
                     previousClickedObject = clickedObject;
                     

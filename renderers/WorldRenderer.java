@@ -14,6 +14,8 @@ import org.w3c.dom.css.Rect;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -34,8 +36,16 @@ public class WorldRenderer {
 	
 	private World world;
 	public OrthographicCamera camera;
+	public OrthographicCamera uiCamera;
+	
 	private ShapeRenderer dbgrenderer = new ShapeRenderer(); //TODO: Орагнизовать возможности дебагмода (рендерятся только контуры объектов, без текстур)
+	private ShapeRenderer dialogShape = new ShapeRenderer();
+	
 	private SpriteBatch sb;
+	
+	private SpriteBatch uiBatch; //Статичен на экране
+	
+	private BitmapFont font = new BitmapFont();
 	
 	private boolean debug = false;
 	
@@ -47,14 +57,24 @@ public class WorldRenderer {
 		this.world = world;
 		//TODO: ZOOM for camera
 		this.camera = new OrthographicCamera(MistGame.WINDOW_WIDTH, MistGame.WINDOW_HEIGHT);
+		this.uiCamera = new OrthographicCamera(MistGame.WINDOW_WIDTH, MistGame.WINDOW_HEIGHT);
+		
 		//camera.setToOrtho(false);
 		camera.position.set(world.hero.getBounds().getCenter(new Vector2()).x,world.hero.getBounds().getCenter(new Vector2()).y,0);
 		camera.zoom = 1.3f;
 		camera.update();
+		
+		uiCamera.update();
+		
 		sb = new SpriteBatch();
 		sb.setProjectionMatrix(camera.combined);
+		//sb.setColor(1f, 0, 0, 0.75f);
+		
+		uiBatch = new SpriteBatch();
+		uiBatch.setProjectionMatrix(uiCamera.combined);
 		
 		dbgrenderer.setProjectionMatrix(camera.combined);
+		dialogShape.setProjectionMatrix(uiCamera.combined);
 		
 		renderQueue = new ArrayList<GameObject>();
 		
@@ -68,6 +88,9 @@ public class WorldRenderer {
 		
 		world.mapHandler.renderFront(camera);
 		mapDebugObjects();
+		
+		renderAction();
+		
 		updateCamera();
 	}
 	
@@ -84,6 +107,11 @@ public class WorldRenderer {
 				
 			}
 		}
+	}
+	
+	private void renderAction(){
+		if(world.hero.getGoalObject()!=null)
+			world.hero.getGoalObject().renderAction(uiCamera);
 	}
 	
 	private void renderObjects(){

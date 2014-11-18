@@ -1,10 +1,13 @@
 package com.mist.world.objects;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mist.actions.ActionHandler;
 import com.mist.game.MistGame;
 import com.mist.world.World;
 
@@ -17,7 +20,8 @@ public class GameObject {
 	protected Texture tex;
 	protected TextureRegion texRegion;
 	
-	protected World currentWorld; //временно?
+	protected Player player; //ТОЛЬКО В PLAYER
+	protected World currentWorld;
 	
 	protected String textureName;
 	
@@ -25,15 +29,21 @@ public class GameObject {
 	protected boolean interaction = false; //можно ли взаимодействовать с объектом (стандартно нельзя)
 	public boolean clicked = false;
 	
+	public ActionHandler actionHandler;
+	private boolean actionWithPlayer = false;
+
+	
 	public GameObject(Vector2 position, Vector2 rec, String textureName){ //links constructor
 		this.bounds = new Rectangle(position.x, position.y, rec.x, rec.y);
 		this.textureName = textureName;
+		this.actionHandler = new ActionHandler();
 		initIMG();
 	}
 	
 	public GameObject (float x, float y, float width, float height, String textureName) {
 		this.bounds = new Rectangle(x, y, width, height);
 		this.textureName = textureName;
+		this.actionHandler = new ActionHandler();
 		initIMG();
 	}
 	
@@ -54,6 +64,13 @@ public class GameObject {
 		sb.end();
 	}
 	
+	public void renderAction(OrthographicCamera uiCamera){
+			if(actionWithPlayer){
+				actionHandler.render(uiCamera);			
+				actionHandler.update(); //update после render - такая вот херня
+			}
+	}
+	
 	public void update(float dt) {
 		
 	}
@@ -66,9 +83,18 @@ public class GameObject {
 		return obstruction;
 	}
 	
-	public void action(){
-		System.out.println("Action!!!");
-		clicked = false;
+	protected boolean action(boolean inAction, Player p){
+		if(inAction) actionHandler.action(player);//только при условии текущего взаимодействия
+		//побочный эффект: бесконечный action, функции заканчиваются и возвращают сигнал -1 в actionHandler
+		actionWithPlayer = inAction;
+		player = p;
+		return inAction;
 	}
+	
+	public GameObject setActionHandler(ActionHandler a){
+		actionHandler = a;
+		return this;
+	}
+	
 	
 }

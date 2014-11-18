@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.mist.world.objects.Direction;
 import com.mist.world.objects.DynamicGameObject;
-import com.mist.world.objects.Enemy;
+import com.mist.world.objects.NPC;
 import com.mist.world.objects.GameObject;
 import com.mist.world.objects.Player;
 
