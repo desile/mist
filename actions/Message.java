@@ -8,12 +8,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.mist.world.objects.Player;
 
 public class Message implements Action {
 
 	private int nextAction = -1;
-	private ArrayList<String> textMessage = new ArrayList<String>(); 
+	private ArrayList<String> textMessage = new ArrayList<String>();
+	public ShapeRenderer messageBox;
+	public Rectangle box = new Rectangle(-180, -130, 360, 50);
 	
 	@Override
 	public void render(OrthographicCamera uiCamera) {
@@ -21,12 +24,12 @@ public class Message implements Action {
 			BitmapFont font = new BitmapFont();
 			SpriteBatch batch = new SpriteBatch();
 			batch.setProjectionMatrix(uiCamera.combined);
-			ShapeRenderer messageBox = new ShapeRenderer();
+			messageBox = new ShapeRenderer();
 			messageBox.setProjectionMatrix(uiCamera.combined);
 			
 			messageBox.begin(ShapeType.Filled);
 			messageBox.setColor(Color.GRAY);
-			messageBox.rect(-180, -130, 360, 50);
+			messageBox.rect(box.x, box.y, box.width, box.height);
 			messageBox.end();
 			batch.begin();
 			font.setColor(Color.WHITE);

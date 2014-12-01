@@ -16,7 +16,7 @@ public class DynamicGameObject extends GameObject {
 	//TOOD: Убрать тестовые функции из классов и перейти к полной модели
 	
 	public enum State{
-		NONE, WALKING, STAND, DEAD, CAST, FIGHT
+		NONE, WALKING, STAND, DEAD, ACTION
 	}
 	
 	protected final float MIN_SPEED = 1f;
@@ -133,6 +133,19 @@ public State getState() {
 
 public void setState(State state) {
 	this.state = state;
+	switch (state) {
+	case ACTION:
+		state = State.STAND;
+		playAnimation = false;
+		initIMG();
+		break;
+	case WALKING:
+		playAnimation = true;
+		initIMG();
+		break;
+	default:
+		break;
+	}
 }
 
 public boolean isPlayAnimation() {

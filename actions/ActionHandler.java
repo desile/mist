@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.mist.world.objects.Player;
+import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 /*
  * TODO:
@@ -34,14 +35,27 @@ public class ActionHandler {
 	
 	//загуглить: уловить момент когда изменяется переменная (ссылка)
 	public void update(){//TODO: вызвать где-нибудь апдэйт экшна
-		if(Gdx.input.justTouched()){
+		/*if(Gdx.input.justTouched()){
 			System.out.println(new_action);
 			if(new_action == -1) //просто переходим к следующему элементу массива
 				currentAction++;
 			else{
 				currentAction = new_action;
 			}
+		}*/
+	}
+	
+	public void nextAction(){
+		System.out.println(new_action);
+		if(new_action == -1) //просто переходим к следующему элементу массива
+			currentAction++;
+		else{
+			currentAction = new_action;
 		}
+	}
+	
+	public Action getCurrentAction(){
+		return actions.get(currentAction);
 	}
 	
 	public ActionHandler addAction(Action action){

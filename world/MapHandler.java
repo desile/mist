@@ -1,6 +1,7 @@
 package com.mist.world;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -41,11 +42,13 @@ public class MapHandler {
 		for(MapObject m : objects){
 			System.out.println(m + " " + ((RectangleMapObject) m).getRectangle().toString());
 		}
+		
 	}
 	
-	public void renderBack(OrthographicCamera camera){
+	public void renderBack(OrthographicCamera camera,ShaderProgram shader){
 		renderer.setView(camera);
 		int[] renderedLayer = {0,1};
+		renderer.getSpriteBatch().setShader(shader);
 		renderer.render(renderedLayer);
 	}
 	
