@@ -45,10 +45,9 @@ public class MapHandler {
 		
 	}
 	
-	public void renderBack(OrthographicCamera camera,ShaderProgram shader){
+	public void renderBack(OrthographicCamera camera){
 		renderer.setView(camera);
 		int[] renderedLayer = {0,1};
-		renderer.getSpriteBatch().setShader(shader);
 		renderer.render(renderedLayer);
 	}
 	

@@ -28,6 +28,7 @@ public class WorldController {
 	private void updateObjects(float delta){
 		for(GameObject obj : world.objectHandler.objects){
 			obj.update(delta);
+			obj.actionHandler.update(world.hero);
 		}
 	}
 	

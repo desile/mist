@@ -66,7 +66,6 @@ public class GameObject {
 	
 	public void renderAction(OrthographicCamera uiCamera){
 			if(actionWithPlayer){
-				actionHandler.update(); //update после render - такая вот херня
 				actionHandler.render(uiCamera);			
 			}
 	}

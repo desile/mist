@@ -135,12 +135,15 @@ public void setState(State state) {
 	this.state = state;
 	switch (state) {
 	case ACTION:
-		state = State.STAND;
 		playAnimation = false;
 		initIMG();
 		break;
 	case WALKING:
 		playAnimation = true;
+		initIMG();
+		break;
+	case STAND:
+		playAnimation = false;
 		initIMG();
 		break;
 	default:

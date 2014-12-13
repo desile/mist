@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.mist.actions.Quest;
 import com.mist.game.MistGame;
 import com.mist.world.World;
 import com.mist.world.objects.DynamicGameObject.State;
@@ -20,9 +21,13 @@ public class Player extends DynamicGameObject {
 	
 	private GameObject goalObject;
 	
+	public Quest currentQuest; //можно сделать список квестов, но одного наверное будет достаточно
+	
 	public boolean inAction = false; //взаимодействует ли в данный момент
 	
 	public DynamicGameObject target;
+	
+	Rectangle nextPosition = new Rectangle();
 	
 	//TODO: Продумать и организовать систему наследования объектов
 	
@@ -124,11 +129,12 @@ public class Player extends DynamicGameObject {
 		//то он как, мать его, коперфильд пройдет сквозь стены!
 		//ДВА ДНЯ ПЫТАЛСЯ ПОФИКСИТЬ - НО НИХ*Я!
 		if(moreCollisions){
-			deadlockInTheCorner();
+			if(deadlockInTheCorner()){
+				return;
+			}
 		}
 		
-		
-		Rectangle nextPosition = new Rectangle(bounds);
+		nextPosition.set(bounds);
 		
 		int smoothWay = (int) (velocity/2);
 		if(smoothWay < 1 && velocity > 1) smoothWay = 1;
@@ -196,9 +202,7 @@ public class Player extends DynamicGameObject {
 					}
 				}
 				else {
-					state = State.STAND;
-					playAnimation = false;
-					initIMG();
+					setState(State.STAND);
 				}
 			
 			int contacts = contactListen(nextPosition);
@@ -230,8 +234,7 @@ public class Player extends DynamicGameObject {
 						}
 					}
 					if(!canSmoothY){
-						playAnimation = false;
-						initIMG();
+						setState(State.STAND);
 					}
 				}
 				if(!ableToMove.Up){
@@ -246,8 +249,7 @@ public class Player extends DynamicGameObject {
 						}
 					}
 					if(!canSmoothX){
-						playAnimation = false;
-						initIMG();
+						setState(State.STAND);
 					}
 				}
 				if(!ableToMove.Left){
@@ -262,8 +264,7 @@ public class Player extends DynamicGameObject {
 						}
 					}
 					if(!canSmoothY){
-						playAnimation = false;
-						initIMG();
+						setState(State.STAND);
 					}
 				}
 				if(!ableToMove.Down){
@@ -278,14 +279,12 @@ public class Player extends DynamicGameObject {
 						}
 					}
 					if(!canSmoothX){
-						playAnimation = false;
-						initIMG();
+						setState(State.STAND);
 					}
 				}
 			}
 			else if(contacts > 1){
-				playAnimation = false;
-				initIMG();
+				setState(State.STAND);
 				System.out.println("more collisions");
 				moreCollisions = true;
 			}
@@ -296,35 +295,32 @@ public class Player extends DynamicGameObject {
 			}
 	}
 	
-	private void deadlockInTheCorner(){
+	private boolean deadlockInTheCorner(){
 		if(!ableToMove.Up && !ableToMove.Right){
 			if(!(destination.x < bounds.x && destination.y < bounds.y)){
-				playAnimation = false;
-				initIMG();
-				return;
+				setState(State.STAND);
+				return true;
 			}
 		}
 		if(!ableToMove.Down && !ableToMove.Right){
 			if(!(destination.x < bounds.x && destination.y > bounds.y)){
-				playAnimation = false;
-				initIMG();
-				return;
+				setState(State.STAND);
+				return true;
 			}
 		}
 		if(!ableToMove.Up && !ableToMove.Left){
 			if(!(destination.x > bounds.x && destination.y < bounds.y)){
-				playAnimation = false;
-				initIMG();
-				return;
+				setState(State.STAND);
+				return true;
 			}
 		}
 		if(!ableToMove.Down && !ableToMove.Left){
 			if(!(destination.x > bounds.x && destination.y > bounds.y)){
-				playAnimation = false;
-				initIMG();
-				return;
+				setState(State.STAND);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	private void checkSideOfOverlaps(){

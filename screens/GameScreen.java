@@ -76,6 +76,7 @@ public class GameScreen implements Screen { //implements InputProcessor?
                     		if(((Message)world.hero.getGoalObject().actionHandler.getCurrentAction()).box.contains(uiClick.x, uiClick.y)){
                     		//if(testrec.contains(uiClick.x, uiClick.y)){
                     			world.hero.getGoalObject().actionHandler.nextAction();
+                    			world.hero.getGoalObject().actionHandler.dialogLogic(world.hero);
                     			System.out.println("CLICK");
                     			return true;
                     		}

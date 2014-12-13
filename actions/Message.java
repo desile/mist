@@ -14,17 +14,25 @@ import com.mist.world.objects.Player;
 public class Message implements Action {
 
 	private int nextAction = -1;
-	private ArrayList<String> textMessage = new ArrayList<String>();
-	public ShapeRenderer messageBox;
-	public Rectangle box = new Rectangle(-180, -130, 360, 50);
+	private ArrayList<String> textMessage;
+	public Rectangle box;
+	
+	BitmapFont font;
+	SpriteBatch batch;
+	ShapeRenderer messageBox;
+	
+	public Message(){
+		textMessage = new ArrayList<String>();
+		box = new Rectangle(-180, -130, 360, 50);
+		font = new BitmapFont();
+		batch = new SpriteBatch();
+		messageBox = new ShapeRenderer();
+	}
 	
 	@Override
 	public void render(OrthographicCamera uiCamera) {
 		if(!textMessage.isEmpty()){
-			BitmapFont font = new BitmapFont();
-			SpriteBatch batch = new SpriteBatch();
 			batch.setProjectionMatrix(uiCamera.combined);
-			messageBox = new ShapeRenderer();
 			messageBox.setProjectionMatrix(uiCamera.combined);
 			
 			messageBox.begin(ShapeType.Filled);

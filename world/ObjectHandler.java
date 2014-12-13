@@ -34,22 +34,9 @@ public class ObjectHandler{
 	}
 	
 	private void initObjects(){
-		objects.add(creators.get("Civilian").create(500, 500, 32, 32, Direction.SOUTH).setActionHandler(
-					new ActionHandler().addAction(
-							new Message().setTextMessage(1,"Hello, stranger! It is very unusal to see",
-														   "adventurer in this place. Can I help you?"),0)
-									   .addAction(new Message().setTextMessage(2, "Hello, again. Nice to meet you."), 1)
-									   .addAction(new Message().setTextMessage(0, "Little annoying, huh..."), 2)
-				));
-		objects.add(creators.get("Ludovic").create(160, 200, 32, 32, Direction.NORTH).setActionHandler(
-				new ActionHandler().addAction(
-						new Message().setTextMessage(0,"Hello, stranger! It seems to be a very",
-													   "difficult journey. Dont you think so?"),0)
-			));
-		objects.add(creators.get("Guardian").create(172, 222, 32, 32, Direction.WEST).setActionHandler(
-				new ActionHandler().addAction(
-						new Message().setTextMessage(0,"Waka-maka-fone"),0)
-			));
+		objects.add(creators.get("Civilian").create(500, 500, 32, 32, Direction.SOUTH));
+		objects.add(creators.get("Ludovic").create(160, 200, 32, 32, Direction.NORTH));
+		objects.add(creators.get("Guardian").create(172, 222, 32, 32, Direction.WEST));
 	}
 	
 	public GameObject searchObject(Vector2 point){

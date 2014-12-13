@@ -15,8 +15,10 @@ import com.sun.xml.internal.ws.api.pipe.NextAction;
 public class ActionHandler {
 
 	private ArrayList<Action> actions;
-	private int currentAction;
+	protected int currentAction;
 	private int new_action;
+	
+	private Player player;
 	
 	public ActionHandler() {
 		actions = new ArrayList<Action>();
@@ -33,16 +35,12 @@ public class ActionHandler {
 		actions.get(currentAction).render(uiCamera);
 	}
 	
+	public void update(Player player){
+		
+	}
+	
 	//загуглить: уловить момент когда изменяется переменная (ссылка)
-	public void update(){//TODO: вызвать где-нибудь апдэйт экшна
-		/*if(Gdx.input.justTouched()){
-			System.out.println(new_action);
-			if(new_action == -1) //просто переходим к следующему элементу массива
-				currentAction++;
-			else{
-				currentAction = new_action;
-			}
-		}*/
+	public void dialogLogic(Player player){//TODO: вызвать где-нибудь апдэйт экшна
 	}
 	
 	public void nextAction(){
