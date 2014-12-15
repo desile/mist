@@ -6,8 +6,11 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mist.world.World;
+import com.mist.world.objects.Barrier;
+import com.mist.world.objects.Crystal;
 import com.mist.world.objects.GameObject;
 import com.mist.world.objects.DynamicGameObject.State;
+import com.mist.world.objects.Zombie;
 
 public class WorldController {
 	
@@ -29,6 +32,15 @@ public class WorldController {
 		for(GameObject obj : world.objectHandler.objects){
 			obj.update(delta);
 			obj.actionHandler.update(world.hero);
+			if(obj instanceof Zombie){
+				((Zombie)obj).update(delta,world.hero,world);
+			}
+			if(obj instanceof Crystal){
+				((Crystal)obj).update(delta,world.hero,world);
+			}
+			if(obj instanceof Barrier){
+				((Barrier)obj).update(delta,world.hero,world);
+			}
 		}
 	}
 	

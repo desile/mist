@@ -21,6 +21,9 @@ public class World {
 	
 	public Player hero;
 	
+	final int StartX = 3252;
+	final int StartY = 240;
+	
 	public MapHandler mapHandler;
 	public ObjectHandler objectHandler;
 	
@@ -28,6 +31,6 @@ public class World {
 		mapHandler = new MapHandler();
 		objectHandler = new ObjectHandler();
 		
-		hero = new Player(100, 120, 50,50,Direction.SOUTH,this);
+		hero = new Player(3252, 240, 50,50,Direction.SOUTH,this);
 	}
 }

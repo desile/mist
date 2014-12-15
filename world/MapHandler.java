@@ -23,7 +23,7 @@ public class MapHandler {
 	
 	public MapHandler(){
 		TmxMapLoader loader = new TmxMapLoader();
-		map = loader.load("demo.tmx");
+		map = loader.load("demo2.tmx");
 		
 		renderer = new OrthogonalTiledMapRenderer(map);
 		

@@ -15,6 +15,8 @@ public class GameObject {
 	
 	//TODO: Убрать тестовые функции
 	//TODO: Конструкторы на простых типах
+	
+	public boolean backRender = false; //Опция для отрисовки - всегда отрисовывать сзади
 
 	protected Rectangle bounds;
 	protected Texture tex;
@@ -93,6 +95,11 @@ public class GameObject {
 	public GameObject setActionHandler(ActionHandler a){
 		actionHandler = a;
 		return this;
+	}
+	
+	public void setCoordinate(int x, int y){
+		bounds.x = x;
+		bounds.y = y;
 	}
 	
 	

@@ -29,6 +29,7 @@ import com.mist.world.World;
 import com.mist.world.objects.DynamicGameObject;
 import com.mist.world.objects.GameObject;
 import com.mist.world.objects.Player;
+import com.mist.world.objects.Zombie;
 import com.sun.javafx.geom.Vec3f;
 
 public class WorldRenderer {
@@ -49,7 +50,7 @@ public class WorldRenderer {
 	
 	private BitmapFont font = new BitmapFont();
 	
-	private boolean debug = false;
+	private boolean debug = true;
 	
 	private Rectangle testrec = new Rectangle(-180, -130, 360, 50); //для проверки области нажатий
 	
@@ -154,8 +155,15 @@ public class WorldRenderer {
 			
 		});
 		
+		for(GameObject object : renderQueue){
+			if(object.backRender == true){
+				renderTexture(object);
+			}
+		}
+		
 		for(GameObject obj : renderQueue){
-			renderTexture(obj);
+			if(obj.backRender == false)
+				renderTexture(obj);
 		}
 		
 		renderQueue.clear();
@@ -193,8 +201,12 @@ public class WorldRenderer {
 			float y = obj.getBounds().y;
 			dbgrenderer.setColor(new Color(1, 0, 0, 1));
 			dbgrenderer.rect(x, y, rect.width, rect.height);
+			if(obj instanceof Zombie){
+				rect = ((Zombie)obj).detectionZone;
+				dbgrenderer.setColor(Color.MAROON);
+				dbgrenderer.rect(rect.x, rect.y, rect.width, rect.height);
+			}
 			dbgrenderer.end();
-			
 		}
 	}
 }

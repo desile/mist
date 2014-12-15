@@ -15,7 +15,7 @@ import com.sun.xml.internal.ws.api.pipe.NextAction;
 public class ActionHandler {
 
 	private ArrayList<Action> actions;
-	protected int currentAction;
+	public int currentAction;
 	private int new_action;
 	
 	private Player player;

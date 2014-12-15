@@ -1,49 +1,32 @@
 package com.mist.world.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.mist.actions.Quest;
-import com.mist.game.MistGame;
 import com.mist.world.World;
 import com.mist.world.objects.DynamicGameObject.State;
 
-public class Player extends DynamicGameObject {
-	protected boolean justTouched = false;
-	protected Vector2 destination = null;
-	protected boolean moreCollisions = false;
-	
-	private GameObject goalObject;
-	
-	public Quest currentQuest; //можно сделать список квестов, но одного наверное будет достаточно
-	
-	public boolean inAction = false; //взаимодействует ли в данный момент
-	
-	public DynamicGameObject target;
-	
+public class Zombie extends NPC {
+
+	protected Vector2 destination = new Vector2(0, 0);
 	Rectangle nextPosition = new Rectangle();
 	
-	//TODO: Продумать и организовать систему наследования объектов
+	public Rectangle detectionZone = new Rectangle();
 	
-	public Player(Vector2 bounds, Vector2 rec, Direction dir, World world) {
-		super(bounds, rec, dir, "testMale");
-		//TODO: Написать автомат или мэнэджер статусов
-		this.state = State.STAND;
-		this.currentWorld = world;
-		//TODO: Сделать привязку анимации к состояниям и направлению персонажа.
-	}
+	final int detectionRadius = 100;
 	
-	public Player(float x, float y, float width, float height, Direction dir, World world){
-		super(x, y, width, height,dir, "testMale");
-		this.state = State.STAND;
-		this.velocity = 1.8f;
-		this.currentWorld = world;
+	protected boolean moreCollisions = false;
+	
+	private World currentWorld;
+	
+	public Zombie(float x, float y, float width, float height, Direction dir,
+			String textureName) {
+		super(x, y, width, height, dir, textureName);
+		state = State.STAND;
+		interaction = false;
+		velocity = 1.2f;
 	}
 	
 	private int contactListen(Rectangle bounds){
@@ -67,58 +50,34 @@ public class Player extends DynamicGameObject {
 		return overlaps;
 	}
 	
-	public boolean interactWithGoal(){
-		if(goalObject!=null)
-			if(Intersector.overlaps(goalObject.bounds, bounds) && goalObject.clicked){
-				setState(State.ACTION);
-				return true;
-			}
-			else return false;
-		return false;
-	}
-	
-	
-	public void update(float dt, Vector2 global) {
-		inAction = interactWithGoal();
-		if(getState()!=State.ACTION){ //если персонаж взаимодейтсвует с предметом
-								 //движение не осуществляется
-		animation.update(dt*velocity);
-		//int xIn=0,yIn=0;
-		
-		destination = global;
-		
-		if(global == null){
-			destination.x = bounds.x; //если координат передано не было, то текущее место и есть цель
-			destination.y = bounds.y;
+	private boolean detectPlayer(Player player){
+		if(Intersector.overlaps(detectionZone, player.bounds)){
+			player.bounds.getPosition(destination);
+			if(state!=State.WALKING)setState(State.WALKING);
+			return true;
 		}
-		
-		/*if (Gdx.input.isTouched()) {
-			playAnimation = true;
-			state = State.WALKING;
-			if(justTouched == true){
-				justTouched = false;
-				initIMG();
-			}
-		}*/
 		else{
-			justTouched = true;
+			setState(State.STAND);
+			return false;
 		}
-		
-		if(state == State.WALKING){
-				walking();
-			}
-		
-		}
-		if(goalObject!=null) goalObject.action(inAction,this);
+	}
 	
+	private boolean alwaysDetectPlayer(Player player){
+		player.bounds.getPosition(destination);
+		state = State.WALKING;
+		return true;
 	}
-
-	public GameObject getGoalObject() {
-		return goalObject;
-	}
-
-	public void setGoalObject(GameObject goalObject) {
-		this.goalObject = goalObject;
+	
+	public void update(float dt,Player player, World world){
+		currentWorld = world;
+		updateDetectionZone();
+		/*if(alwaysDetectPlayer(player)){
+			System.out.println("i see you");
+			walking();
+		}*/
+		if(detectPlayer(player)){
+			walking();
+		}
 	}
 	
 	private void walking(){
@@ -343,15 +302,14 @@ public class Player extends DynamicGameObject {
 		}
 	}
 	
-	private void smoothGoX(){
-		
+	private void updateDetectionZone(){
+		detectionZone.x = bounds.x - detectionRadius;
+		detectionZone.y = bounds.y - detectionRadius;
+		//Теорема Пифагора
+		//detectionZone.height = (float) (bounds.height + Math.sqrt(Math.pow(detectionRadius, 2)*2));
+		//detectionZone.width = (float) (bounds.width + Math.sqrt(Math.pow(detectionRadius, 2)*2));
+		detectionZone.height = bounds.height + detectionRadius*2;
+		detectionZone.width = bounds.width + detectionRadius*2;
 	}
 	
-	private void smoothGoY(){
-		
-	}
-	
-	private void smoothGoXY(){
-		
-	}
 }
