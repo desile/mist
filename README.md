@@ -14,6 +14,11 @@ public class DesktopLauncher {
 	}
 }
 ```
+<i>prepare20</i> commit preview<br>
+<table><tr>
+<td><img src="http://ipic.su/img/img7/fs/kiss_224kb.1418688659.png" alt="prepare20.1"/></td>
+<td><img src="http://ipic.su/img/img7/fs/kiss_149kb.1418678149.png" alt="prepare20.2"/></td>
+</tr></table>
 
 <i>prepare9</i> commit preview<br>
 [GIF (5.41mb traffic)](gitdata/prepare9-long.gif)
