@@ -1,4 +1,4 @@
-mist
+![mist](http://ipic.su/img/img7/fs/kiss_23kb.1422004044.png)
 ====
 
 Обновленный код для DesktopLauncher.java
