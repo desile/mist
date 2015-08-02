@@ -4,13 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.math.Vector2;
-import com.mist.actions.ActionHandler;
-import com.mist.actions.Message;
 import com.mist.world.objects.Direction;
-import com.mist.world.objects.NPC;
 import com.mist.world.objects.GameObject;
 import com.mist.world.objects.factorymethod.*;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class ObjectHandler{
 	

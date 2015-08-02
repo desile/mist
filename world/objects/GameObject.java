@@ -39,7 +39,7 @@ public class GameObject {
 		this.bounds = new Rectangle(position.x, position.y, rec.x, rec.y);
 		this.textureName = textureName;
 		this.actionHandler = new ActionHandler();
-		initIMG();
+		//initIMG();
 	}
 	
 	public GameObject (float x, float y, float width, float height, String textureName) {

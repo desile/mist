@@ -49,7 +49,7 @@ public class DynamicGameObject extends GameObject {
 		direction = dir;
 		state = State.NONE;
 		animation = new Animation();
-		initIMG();
+	//	initIMG();
 	}
 	
 	public void setAnimation(TextureRegion reg, float delay) {

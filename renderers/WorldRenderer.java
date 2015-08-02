@@ -12,6 +12,7 @@ import java.util.function.ToLongFunction;
 import org.w3c.dom.css.Rect;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -46,11 +47,13 @@ public class WorldRenderer {
 	
 	private SpriteBatch sb;
 	
+	private static float CameraZoom = 0.6f;
+	
 	private SpriteBatch uiBatch; //Статичен на экране
 	
 	private BitmapFont font = new BitmapFont();
 	
-	private boolean debug = true;
+	private boolean debug = false;
 	
 	private Rectangle testrec = new Rectangle(-180, -130, 360, 50); //для проверки области нажатий
 	
@@ -68,7 +71,7 @@ public class WorldRenderer {
 		
 		//camera.setToOrtho(false);
 		camera.position.set(world.hero.getBounds().getCenter(new Vector2()).x,world.hero.getBounds().getCenter(new Vector2()).y,0);
-		camera.zoom = 1.3f;
+		camera.zoom = CameraZoom;
 		
 		uiCamera.update();
 		
@@ -91,22 +94,28 @@ public class WorldRenderer {
 	}
 	
 	public void render(){
-		//worldGrid();
+		
+		uiCamera.zoom = 0.66f;
+		uiCamera.update();
+		
 		world.mapHandler.renderBack(camera);
 		renderObjects();
 		
 		world.mapHandler.renderFront(camera);
 		mapDebugObjects();
 		
+		//worldGrid();
+		
 		renderAction();
-		
-		debugText();
-		
-		dialogShape.begin(ShapeType.Line);
-		Rectangle rect = testrec;
-		dialogShape.setColor(new Color(1, 0, 0, 1));
-		dialogShape.rect(rect.x, rect.y, rect.width, rect.height);
-		dialogShape.end();
+		if(debug){
+			debugText();
+			
+			dialogShape.begin(ShapeType.Line);
+			Rectangle rect = testrec;
+			dialogShape.setColor(new Color(1, 0, 0, 1));
+			dialogShape.rect(rect.x, rect.y, rect.width, rect.height);
+			dialogShape.end();
+		}
 		
 		updateCamera();
 	}
@@ -172,7 +181,7 @@ public class WorldRenderer {
 	
 	private void updateCamera(){
 		camera.position.set(world.hero.getBounds().getCenter(new Vector2()).x,world.hero.getBounds().getCenter(new Vector2()).y,0);
-		camera.zoom = 1.3f;
+		camera.zoom = CameraZoom;
 		camera.update();
 		sb.setProjectionMatrix(camera.combined);
 		

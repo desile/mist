@@ -23,7 +23,7 @@ public class Message implements Action {
 	
 	public Message(){
 		textMessage = new ArrayList<String>();
-		box = new Rectangle(-180, -130, 360, 50);
+		box = new Rectangle(-180, -110, 360, 50);
 		font = new BitmapFont();
 		batch = new SpriteBatch();
 		messageBox = new ShapeRenderer();
@@ -43,7 +43,7 @@ public class Message implements Action {
 			font.setColor(Color.WHITE);
 				
 			for(int i = 0; i < textMessage.size();i++)
-				font.draw(batch, textMessage.get(i), -170, -90 - i*20);
+				font.draw(batch, textMessage.get(i), -170, -70 - i*20);
 			batch.end();
 		}
 	}

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -137,8 +138,11 @@ public class GameScreen implements Screen { //implements InputProcessor?
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+		if(width == MistGame.WINDOW_HEIGHT && height == MistGame.WINDOW_HEIGHT) return;
+		MistGame.WINDOW_HEIGHT = height/MistGame.WINDOW_SCALE;
+		MistGame.WINDOW_WIDTH = width/MistGame.WINDOW_SCALE;
+		renderer = new WorldRenderer(world);
+		System.out.println("New height = " + height + "\nNew width = " + width);
 	}
 	
 	
@@ -187,7 +191,7 @@ public class GameScreen implements Screen { //implements InputProcessor?
 	}
 	
 	private Vector2 onUIDown(){
-		Vector2 v = new Vector2((Gdx.input.getX() - MistGame.getWidth()/2)/MistGame.WINDOW_SCALE,-(Gdx.input.getY() - MistGame.getHeight()/2)/MistGame.WINDOW_SCALE);
+		Vector2 v = new Vector2((Gdx.input.getX() - MistGame.getWidth()/2) * renderer.uiCamera.zoom / MistGame.WINDOW_SCALE + (int)renderer.uiCamera.position.x,((MistGame.getHeight() - Gdx.input.getY()) - MistGame.getHeight()/2) * renderer.uiCamera.zoom / MistGame.WINDOW_SCALE + (int)renderer.uiCamera.position.y);
 		System.out.println("Origin at x=" + v.x + ", y=" + v.y);
 		return v;
 	}
