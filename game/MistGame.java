@@ -8,8 +8,6 @@ import com.mist.screens.GameScreen;
 
 public class MistGame extends Game{
 	
-	//TODO: РАЗГРЕСТИ НАВОРОЧЕННОЕ ГОВНО В АДЕКВАТНУЮ КУЧУ В КЛАССЕ Player И ЕГО РОДИТЕЛЯХ
-	
 	public static final String GAME_TITLE = "Mist Game";
 	public static int WINDOW_WIDTH = 480;
 	public static int WINDOW_HEIGHT = 320;
